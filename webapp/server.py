@@ -15,6 +15,7 @@ def createResumeAction():
     name = request.form['name']
     profileURL = request.form['profileURL']
     role = request.form['role']
+    monthlySalary = request.form['monthlySalary']
     about = request.form['about']
     experience = request.form['experience']
     education = request.form['education']
