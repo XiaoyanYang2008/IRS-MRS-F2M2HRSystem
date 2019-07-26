@@ -59,7 +59,7 @@ def createResumeAction():
     else:
         URL = profileURL
 
-    result = upload_resume.insertResume(name,URL,rawResume)
+    result = upload_resume.insertResume(nameRaw,URL,rawResume)
 
     return render_template('createResumePageResult.html', results=result)
 
