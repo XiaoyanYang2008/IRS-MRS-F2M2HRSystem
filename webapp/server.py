@@ -1,9 +1,17 @@
 import pickle
 
 from flask import Flask, render_template, request
+from werkzeug import secure_filename
+import os
+import upload_resume
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = './Resumes/'
 
+def uploadFile(file):
+    Filename = secure_filename(file.filename)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'],Filename))
+    return Filename
 
 @app.route('/')
 def index():
@@ -13,6 +21,11 @@ def index():
 @app.route('/createResumePage')
 def createResumePage():
     return render_template('createResumePage.html')
+
+
+@app.route('/uploadResumePage')
+def uploadResumePage():
+    return render_template('uploadResumePage.html')
 
 
 @app.route('/createResumeAction', methods=['POST'])
@@ -34,9 +47,39 @@ def createResumeAction():
     # pdf, docx text should be saved into rawResume.
     rawResume = nameRaw + role + "\r\nmonthly salary: "
     monthlySalary + aboutRaw + experienceRaw + licensesCertificationsRaw + skillsEndorsementsRaw
+    
+    try:
+        uploadfile = request.files['uploadfile']
+    except:
+        uploadfile = None
+    
+    if uploadfile : 
+        result = uploadFile(uploadfile)
+        URL = result
+    else:
+        URL = profileURL
+    
+    result = upload_resume.insertResume(name,URL,rawResume)
+    
+    return render_template('createResumePageResult.html', results=result)
 
-    return render_template('createResumePageResult.html', name=nameRaw)
-
+@app.route('/uploadResumeAction', methods=['POST'])
+def uploadResumeAction():
+    name = request.form['name']
+    # Following code is to upload resume file to server
+    try:
+        uploadfile = request.files['uploadfile']
+    except:
+        uploadfile = None
+    
+    if uploadfile : 
+        uploadfilename = uploadFile(uploadfile)
+        rawResume = upload_resume.extractResumeContent(uploadfilename)
+        result = upload_resume.insertResume(name,uploadfilename,rawResume)
+    else:
+        result = "No Profile to upload"
+    
+    return render_template('createResumePageResult.html', results=result)
 
 if __name__ == '__main__':
     app.run(debug=True)
