@@ -32,7 +32,7 @@ def createResumeAction():
 
     # rawResume can be searched by KNN like pdf, docx formats.
     # pdf, docx text should be saved into rawResume.
-    rawResume = nameRaw + roleRaw + "\r\nmonthly salary: "
+    rawResume = nameRaw + role + "\r\nmonthly salary: "
     monthlySalary + aboutRaw + experienceRaw + licensesCertificationsRaw + skillsEndorsementsRaw
 
     return render_template('createResumePageResult.html', name=nameRaw)
