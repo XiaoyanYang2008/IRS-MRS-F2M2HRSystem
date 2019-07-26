@@ -9,6 +9,8 @@ message Experience {
     string startDateYYYYMMDD = 4;
     string employmentDurationText = 5;
     int32 employmentDurationInMonths = 6;
+    string location = 7;
+    string experienceText = 8;
 
 }
 
@@ -18,8 +20,13 @@ message Resume {
     string rawResume = 2;
     string profileURL = 3;
     float monthlySalary = 4;
-    string companyName = 5;
-    string title = 6;
+    string companyName = 5; // from role
+    string title = 6; // from role
+    string aboutRaw = 7;
+    string experienceRaw = 8;
+    string educationRaw = 9;
+    string licensesCertificationsRaw = 10;
+    string skillsEndorsementsRaw = 11;
 
     repeated Experience experiences = 16;
 
