@@ -1,17 +1,19 @@
+import os
 import pickle
 
+import upload_resume
 from flask import Flask, render_template, request
 from werkzeug import secure_filename
-import os
-import upload_resume
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './Resumes/'
 
+
 def uploadFile(file):
     Filename = secure_filename(file.filename)
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'],Filename))
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], Filename))
     return Filename
+
 
 @app.route('/')
 def index():
@@ -53,15 +55,16 @@ def createResumeAction():
     except:
         uploadfile = None
 
-    if uploadfile :
+    if uploadfile:
         result = uploadFile(uploadfile)
         URL = result
     else:
         URL = profileURL
 
-    result = upload_resume.insertResume(nameRaw,URL,rawResume)
+    result = upload_resume.insertResume(nameRaw, URL, rawResume)
 
     return render_template('createResumePageResult.html', results=result)
+
 
 @app.route('/uploadResumeAction', methods=['POST'])
 def uploadResumeAction():
@@ -72,28 +75,31 @@ def uploadResumeAction():
     except:
         uploadfile = None
 
-    if uploadfile :
+    if uploadfile:
         uploadfilename = uploadFile(uploadfile)
         rawResume = upload_resume.extractResumeContent(uploadfilename)
-        result = upload_resume.insertResume(name,uploadfilename,rawResume)
+        result = upload_resume.insertResume(name, uploadfilename, rawResume)
     else:
         result = "No Profile to upload"
 
     return render_template('createResumePageResult.html', results=result)
 
+
 @app.route('/searchResumePage')
 def searchResumePage():
     return render_template('searchResumePage.html')
+
 
 @app.route('/searchResumeAction', methods=['POST'])
 def searchResumeAction():
     # print(request.form)
 
-
     searchImportantKey = request.form['importantKey']
     searchOptionKey = request.form['optionKey']
 
-    return render_template('searchResumePageResult.html', searchImportantKey=searchImportantKey,searchOptionKey =searchOptionKey)
+    return render_template('searchResumePageResult.html', searchImportantKey=searchImportantKey,
+                           searchOptionKey=searchOptionKey)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
