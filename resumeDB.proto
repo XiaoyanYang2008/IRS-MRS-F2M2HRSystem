@@ -5,7 +5,7 @@ package hr.domain;
 message Experience {
     string companyName = 1;
     string title = 2;
-    string datesEmployed = 3;
+    string datesEmployedText = 3;
     string startDateYYYYMMDD = 4;
     string employmentDurationText = 5;
     int32 employmentDurationInMonths = 6;
@@ -30,4 +30,8 @@ message Resume {
 
     repeated Experience experiences = 16;
 
+}
+
+message ResumeDB {
+    repeated Resume resumes = 1;
 }

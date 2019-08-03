@@ -9,10 +9,12 @@ import search
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './Resumes/'
 
+
 def uploadFile(file):
     Filename = secure_filename(file.filename)
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'],Filename))
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], Filename))
     return Filename
+
 
 @app.route('/')
 def index():
@@ -54,15 +56,16 @@ def createResumeAction():
     except:
         uploadfile = None
 
-    if uploadfile :
+    if uploadfile:
         result = uploadFile(uploadfile)
         URL = result
     else:
         URL = profileURL
 
-    result = upload_resume.insertResume(nameRaw,URL,rawResume)
+    result = upload_resume.insertResume(nameRaw, URL, rawResume)
 
     return render_template('createResumePageResult.html', results=result)
+
 
 @app.route('/uploadResumeAction', methods=['POST'])
 def uploadResumeAction():
@@ -82,14 +85,16 @@ def uploadResumeAction():
 
     return render_template('createResumePageResult.html', results=result)
 
+
 @app.route('/searchResumePage')
 def searchResumePage():
     return render_template('searchResumePage.html')
 
+
 @app.route('/searchResumeAction', methods=['POST', 'GET'])
 def searchResumeAction():
-    # print(request.form)
 
+    searchImportantKey = request.form['importantKey']
     try:
         searchImportantKey = request.form['importantKey']
     except:
@@ -99,10 +104,10 @@ def searchResumeAction():
 
     if searchImportantKey:
         result = search.res(searchImportantKey, searchOptionKey)
+        return render_template('searchResumePageResult.html', results=result)
     else:
         result = "No search key input"
-
-    return render_template('searchResumePageResult.html', results = result)
+        return render_template('searchResumePage.html', results=result)
 
 if __name__ == '__main__':
     app.run(debug=True)
