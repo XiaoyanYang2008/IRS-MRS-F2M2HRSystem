@@ -4,6 +4,7 @@ from flask import Flask, render_template, request
 from werkzeug import secure_filename
 import os
 import upload_resume
+import search
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './Resumes/'
@@ -85,15 +86,23 @@ def uploadResumeAction():
 def searchResumePage():
     return render_template('searchResumePage.html')
 
-@app.route('/searchResumeAction', methods=['POST'])
+@app.route('/searchResumeAction', methods=['POST', 'GET'])
 def searchResumeAction():
     # print(request.form)
 
+    try:
+        searchImportantKey = request.form['importantKey']
+    except:
+        searchImportantKey = None
 
-    searchImportantKey = request.form['importantKey']
     searchOptionKey = request.form['optionKey']
 
-    return render_template('searchResumePageResult.html', searchImportantKey=searchImportantKey,searchOptionKey =searchOptionKey)
+    if searchImportantKey:
+        result = search.res(searchImportantKey, searchOptionKey)
+    else:
+        result = "No search key input"
+
+    return render_template('searchResumePageResult.html', results = result)
 
 if __name__ == '__main__':
     app.run(debug=True)

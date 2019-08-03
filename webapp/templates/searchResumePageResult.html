@@ -31,7 +31,7 @@
 <div class="container">
     <div class="py-5 text-center">
         <div class="row">
-            <div class="col-sm-4"><h3 align="left">Search Resume Page Result</h3></div>
+            <div class="col-sm"><h3 align="left">Search Resume Page Result</h3></div>
         </div>
         <div class="row">
             <div class="col-sm">&nbsp;</div>
@@ -39,12 +39,48 @@
         <div class="row">
             <div class="col-sm" align="left">Best Match Resumes</div>
         </div>
+                <table class="table-hover">
+			<thead>
+			  <tr>
+				<th>Rank</th>
+                  <th>Name</th>
+				<th>Resume</th>
+			  </tr>
+			</thead>
+			{% for m in results :%}
+				<tbody>
+			  		<tr>
+						<td>{{m.rank}}</td>
+                        <td>{{m.name}}</td>
+						<td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
+			  		</tr>
+				</tbody>
+			{% endfor %}
+		</table>
         <div class="row">
             <div class="col-sm">&nbsp;</div>
         </div>
         <div class="row">
             <div class="col-sm" align="left">Recommended Resumes</div>
         </div>
+        <table class="table-hover">
+			<thead>
+			  <tr>
+				<th>Rank</th>
+                <th>Name</th>
+				<th>Resume</th>
+			  </tr>
+			</thead>
+			{% for n in results :%}
+				<tbody>
+			  		<tr>
+						<td>{{n.rank}}</td>
+                        <td>{{n.name}}</td>
+						<td><a href="{{url_for('custom_static', filename=n.filename)}}">{{n.filename}}</a></td>
+			  		</tr>
+				</tbody>
+			{% endfor %}
+		</table>
         <div class="row">
             <div class="col-sm">&nbsp;</div>
         </div>
