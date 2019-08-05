@@ -1,7 +1,7 @@
 import os
 import warnings
 import csv
-import PyPDF2
+import pdf2text
 from docx import Document
 
 def insertResume(name, profileURL, rawContent):
@@ -29,22 +29,12 @@ def insertResume(name, profileURL, rawContent):
 def extractResumeContent(filename):
     file = "./Resumes/" + filename
     Resumes = []
-    Temp_pdf = []
 
     Temp = filename.split(".")
     if Temp[1].lower() == "pdf":
         print("This is PDF - ", filename)
         try:
-            with open(file, 'rb') as pdf_file:
-                read_pdf = PyPDF2.PdfFileReader(pdf_file)
-                number_of_pages = read_pdf.getNumPages()
-                for page_number in range(number_of_pages):
-                    page = read_pdf.getPage(page_number)
-                    page_content = page.extractText()
-                    page_content = page_content.replace('\n', ' ')
-                    Temp_pdf = str(Temp_pdf) + str(page_content)
-                Resumes.extend([Temp_pdf])
-                Temp_pdf = ''
+            Resumes = pdf2text.pdf_to_text(file)
         except Exception as e:
             print(e)
 
