@@ -78,7 +78,11 @@ def createResumeAction():
     resume.profileURL = profileURL
     resume.rawResume = rawResume
     resume.monthlySalary = int(monthlySalary)
-    # resume.companyName = role.split(" at ")
+
+    if role.find(' at ') != -1:
+        resume.companyName = role.split(" at ")[1]
+        resume.title = role.split(" at ")[0]
+
     resume.aboutRaw = aboutRaw
     resume.educationRaw = educationRaw
     resume.educations.extend(lk_parser.extractEducations(educationRaw))
