@@ -3,13 +3,17 @@ import re
 
 import resumeDB_pb2
 
+SECTION_EDUCATION_TOKEN = "Education\r\n"
+SECTION_EDUCATION_DEGREE_NAME_TOKEN = "Degree Name"
+
 SECTION_EXPERIENCE_TOKEN = "Experience\r\n"
 SECTION_EXPERIENCE_COMPANY_NAME_TOKEN = "Company Name"
 
 
 def main():
-    main_testExperience()
+    # main_testExperience()
     # main_testYearMonthTextToIntMonths()
+    main_testEducation()
 
 
 def main_testYearMonthTextToIntMonths():
@@ -69,10 +73,22 @@ def main_testExperience():
     saveData("data.pb", db)
 
 
+def main_testEducation():
+    educationText = pickle.load(open('education.pickle', 'rb'))
+    print(educationText)
+    print('After processing....')
 
-def extractExperiences(experience):
-    records = experience.split('\r\n\r\n')
-    cnRecords = experience.split(SECTION_EXPERIENCE_COMPANY_NAME_TOKEN)
+    resume = resumeDB_pb2.Resume()
+    resume.educations.extend(extractEducations(educationText))
+
+    db = resumeDB_pb2.ResumeDB()
+    db.resumes.append(resume)
+    saveData("data.pb", db)
+
+
+def extractExperiences(experiencesText):
+    records = experiencesText.split('\r\n\r\n')
+    cnRecords = experiencesText.split(SECTION_EXPERIENCE_COMPANY_NAME_TOKEN)
 
     exps = []
 
@@ -88,13 +104,38 @@ def extractExperiences(experience):
 
     # anExperience = extractAnExperienceData(records[0])
 
-
     # print(records)
     print("exps length:", len(exps))
     return exps
 
 
-# TODO done regex. Try to build domain class for structure data.
+# TODO parse education field.
+# check 'Degree name' count and \r\n\r\n split count first, TODO may need to do that as web validation.
+#
+def extractEducations(educationText):
+    records = educationText.split('\r\n\r\n')
+
+    edus = []
+
+    # TODO do UI check when extra empty lines more then company? 8 vs 8 in this case.
+    # print("length by 1 emptyline %s, by cn %s" % (len(records), len(cnRecords)))
+
+    if (not records[0].startswith(SECTION_EDUCATION_TOKEN)):
+        return
+
+    for e in records:
+        if (e.find(SECTION_EDUCATION_DEGREE_NAME_TOKEN) != -1):
+            edus.append(extractAnEducationData(e))
+
+    # anExperience = extractAnExperienceData(records[0])
+
+    # print(records)
+    # print("exps length:", len(edus))
+    return edus
+    return
+
+
+# Done regex. Done build domain class for structure data.
 def extractAnExperienceData(anExperience):
     if (anExperience.startswith(SECTION_EXPERIENCE_TOKEN)):
         anExperience = anExperience.replace(SECTION_EXPERIENCE_TOKEN, "")
@@ -102,7 +143,7 @@ def extractAnExperienceData(anExperience):
     # sections = anExperience.split("\r\n")
 
     exp = resumeDB_pb2.Experience()
-    exp.title = locateData("\r\n(.*)\r\nCompany Name", anExperience)
+    exp.title = locateData("\r\n(.*)\r\n" + SECTION_EXPERIENCE_COMPANY_NAME_TOKEN, anExperience)
 
     # Title
     print(exp.title)
@@ -111,7 +152,7 @@ def extractAnExperienceData(anExperience):
     # print(re.search("\r\nTitle(.*)\r\n", anExperience).group(1))
 
     # Company
-    exp.companyName = locateData("\r\nCompany Name(.*)\r\n", anExperience)
+    exp.companyName = locateData("\r\n" + SECTION_EXPERIENCE_COMPANY_NAME_TOKEN + "(.*)\r\n", anExperience)
     print(exp.companyName)
 
     # Dates Employed
@@ -132,6 +173,29 @@ def extractAnExperienceData(anExperience):
     exp.experienceText = locateData("\r\nLocation(.*)\r\n", anExperience, re.DOTALL)
 
     return exp
+
+
+def extractAnEducationData(anEducationText):
+    if anEducationText.startswith(SECTION_EDUCATION_TOKEN):
+        anEducationText = anEducationText.replace(SECTION_EDUCATION_TOKEN, "")
+
+    # sections = anExperience.split("\r\n")
+
+    edu = resumeDB_pb2.Education()
+    edu.schoolName = locateData("\r\n(.*)\r\n" + SECTION_EDUCATION_DEGREE_NAME_TOKEN, anEducationText)
+
+    # schoolName
+    # print(edu.schoolName)
+
+    # degreeName
+    edu.degreeName = locateData("\r\n" + SECTION_EDUCATION_DEGREE_NAME_TOKEN + "(.*)\r\n", anEducationText)
+    # print(edu.degreeName)
+
+    edu.startDateYYYY = locateData("Dates attended or expected graduation (.*) –", anEducationText)
+    edu.endDateYYYY = locateData("Dates attended or expected graduation [0-9]{4} – (.*)", anEducationText)
+    # print(edu.endDateYYYY)
+
+    return edu
 
 
 def locateData(pattern, anExperience, flags=0):
@@ -161,7 +225,6 @@ def saveData(fileName, db):
     f = open(fileName, "wb")
     f.write(db.SerializeToString())
     f.close()
-
 
 
 if __name__ == '__main__':
