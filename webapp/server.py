@@ -1,8 +1,8 @@
 import os
 import pickle
 
-import upload_resume
 import search
+import upload_resume
 from flask import Flask, render_template, request
 from werkzeug import secure_filename
 
@@ -44,7 +44,8 @@ def createResumeAction():
     educationRaw = request.form['education']
     licensesCertificationsRaw = request.form['licensesCertifications']
     skillsEndorsementsRaw = request.form['skillsEndorsements']
-    pickle.dump(experienceRaw, open('experience.pickle', "wb"))
+    # pickle.dump(experienceRaw, open('experience.pickle', "wb"))
+    pickle.dump(educationRaw, open('education.pickle', "wb"))
 
     # rawResume can be searched by KNN like pdf, docx formats.
     # pdf, docx text should be saved into rawResume.
