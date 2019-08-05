@@ -188,11 +188,16 @@ def extractAnEducationData(anEducationText):
     # print(edu.schoolName)
 
     # degreeName
-    edu.degreeName = locateData("\r\n" + SECTION_EDUCATION_DEGREE_NAME_TOKEN + "(.*)\r\n", anEducationText)
+    edu.degreeName = locateData("\r\n" + SECTION_EDUCATION_DEGREE_NAME_TOKEN + "(.*)", anEducationText)
     # print(edu.degreeName)
 
-    edu.startDateYYYY = locateData("Dates attended or expected graduation (.*) –", anEducationText)
-    edu.endDateYYYY = locateData("Dates attended or expected graduation [0-9]{4} – (.*)", anEducationText)
+    date = locateData("Dates attended or expected graduation (.*) –", anEducationText)
+    if date is None:
+        edu.startDateYYYY = ""
+
+    date = locateData("Dates attended or expected graduation [0-9]{4} – (.*)", anEducationText)
+    if date is None:
+        edu.endDateYYYY = ""
     # print(edu.endDateYYYY)
 
     return edu
