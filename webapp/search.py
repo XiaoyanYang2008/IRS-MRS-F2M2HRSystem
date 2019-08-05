@@ -1,9 +1,10 @@
-import re, string
-import os
-import pandas
+import re
+import string
+
 import normalizeText
-from bs4 import BeautifulSoup
+import pandas
 from autocorrect import spell
+from bs4 import BeautifulSoup
 from gensim.summarization import summarize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import NearestNeighbors
@@ -45,6 +46,7 @@ def normalize(words):
     words = normalizeText.remove_stopwords(words)
     words = normalizeText.replace_numbers(words) # replace number to words
     words = normalizeText.remove_non_ascii(words)
+    words = normalizeText.lemmatize_verbs(words)
     return words
 
 
@@ -66,35 +68,38 @@ def res(importantkey, optionalkey):
 
     Job_Desc_Imp = vector.toarray()
 
-    if optionalkey != '':
+    if len(optionalkey) != 0:
         try:
             optt = str(optionalkey)
             textopt = [optt]
+            vectorizerOpt = TfidfVectorizer(stop_words='english')
+            vectorizerOpt.fit(textopt)
+            vectorOpt = vectorizer.transform(textopt)
+
+            Job_Desc_Opt = vectorOpt.toarray()
         except:
             textopt = 'None'
 
-    vectorizerOpt = TfidfVectorizer(stop_words='english')
-    vectorizerOpt.fit(textopt)
-    vectorOpt = vectorizer.transform(textopt)
-
-    Job_Desc_Opt = vectorOpt.toarray()
-
-    savedPath = os.getcwd()
-    os.chdir('./db')
-    df = pandas.read_csv("resume_db.csv")
+    df = pandas.read_csv("./db/resume_db.csv")
     print(df)
 
     resume = df['rawResume']
     resume_vect = []
     score = []
     for row in resume:
-        text = str(row)
+
+        t_resume = normalize(row)
+        t_resume = ' '.join(t_resume)
+        t_resume = t_resume.translate(str.maketrans('', '', string.punctuation))
+        t_resume = str(t_resume)
+        text_raw = str(row)
         try:
-            tttt = summarize(text, word_count=100)
+            tttt = summarize(text_raw, word_count=100)
             text = [tttt]
             vector = vectorizer.transform(text)
             resume_vect.append(vector.toarray())
-        except:
+        except Exception as e:
+            print(e)
             pass
     df['Score'] = ''
     for i in resume_vect:
@@ -103,7 +108,7 @@ def res(importantkey, optionalkey):
         neigh.fit(samples)
         NearestNeighbors(algorithm='auto', leaf_size=30)
         scorea = neigh.kneighbors(Job_Desc_Imp)[0][0].tolist()
-        if optionalkey != '':
+        if len(optionalkey) != 0:
             scoreb = neigh.kneighbors(Job_Desc_Opt)[0][0].tolist()
             score.append(scorea[0] * 0.7 + scoreb[0] * 0.3)
         else:
@@ -133,5 +138,4 @@ def res(importantkey, optionalkey):
         # # res.printresult()
         # print(f"Rank{res.rank+1} :\t {res.filename}")
 
-    os.chdir(savedPath)
     return flask_return
