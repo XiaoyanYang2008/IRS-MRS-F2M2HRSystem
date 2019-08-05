@@ -1,10 +1,10 @@
+import os
 import pickle
 
-from flask import Flask, render_template, request
-from werkzeug import secure_filename
-import os
 import upload_resume
 import search
+from flask import Flask, render_template, request
+from werkzeug import secure_filename
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './Resumes/'
@@ -56,13 +56,13 @@ def createResumeAction():
     except:
         uploadfile = None
 
-    if uploadfile:
+    if uploadfile :
         result = uploadFile(uploadfile)
         URL = result
     else:
         URL = profileURL
 
-    result = upload_resume.insertResume(nameRaw, URL, rawResume)
+    result = upload_resume.insertResume(nameRaw,URL,rawResume)
 
     return render_template('createResumePageResult.html', results=result)
 
@@ -93,6 +93,7 @@ def searchResumePage():
 
 @app.route('/searchResumeAction', methods=['POST', 'GET'])
 def searchResumeAction():
+    # print(searchresult.form)
 
     searchImportantKey = request.form['importantKey']
     try:
@@ -106,8 +107,9 @@ def searchResumeAction():
         result = search.res(searchImportantKey, searchOptionKey)
         return render_template('searchResumePageResult.html', results=result)
     else:
-        result = "No search key input"
-        return render_template('searchResumePage.html', results=result)
+        result = "No 'Mandatory Search Key' input"
+        return render_template('searchResumePageResult.html', results=result)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

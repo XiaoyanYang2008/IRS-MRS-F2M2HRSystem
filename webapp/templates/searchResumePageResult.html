@@ -36,10 +36,15 @@
         <div class="row">
             <div class="col-sm">&nbsp;</div>
         </div>
+        {% if results == null or results == "No 'Mandatory Search Key' input" %}
+        <div class="row">
+            <div class="col-sm" align="left">{{results }}</div>
+        </div>
+        {% else %}
         <div class="row">
             <div class="col-sm" align="left">Best Match Resumes</div>
         </div>
-                <table class="table-hover">
+        <table class="table-hover">
 			<thead>
 			  <tr>
 				<th>Rank</th>
@@ -81,6 +86,7 @@
 				</tbody>
 			{% endfor %}
 		</table>
+        {% endif %}
         <div class="row">
             <div class="col-sm">&nbsp;</div>
         </div>
