@@ -1,10 +1,13 @@
 import os
-import pickle
 
+import lk_parser
+import resumeDB_pb2
 import search
 import upload_resume
 from flask import Flask, render_template, request
 from werkzeug import secure_filename
+
+RESUMEDB_FILE_PB = "resumeDB.pb"
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './Resumes/'
@@ -35,6 +38,8 @@ def uploadResumePage():
 def createResumeAction():
     # print(request.form)
 
+    db = lk_parser.loadData(RESUMEDB_FILE_PB)
+
     nameRaw = request.form['name']
     profileURL = request.form['profileURL']
     role = request.form['role']
@@ -45,7 +50,7 @@ def createResumeAction():
     licensesCertificationsRaw = request.form['licensesCertifications']
     skillsEndorsementsRaw = request.form['skillsEndorsements']
     # pickle.dump(experienceRaw, open('experience.pickle', "wb"))
-    pickle.dump(educationRaw, open('education.pickle', "wb"))
+    # pickle.dump(educationRaw, open('education.pickle', "wb"))
 
     # rawResume can be searched by KNN like pdf, docx formats.
     # pdf, docx text should be saved into rawResume.
@@ -57,15 +62,51 @@ def createResumeAction():
     except:
         uploadfile = None
 
-    if uploadfile :
+    if uploadfile:
         result = uploadFile(uploadfile)
         URL = result
     else:
         URL = profileURL
 
-    result = upload_resume.insertResume(nameRaw,URL,rawResume)
+    result = upload_resume.insertResume(nameRaw, URL, rawResume)
+
+    resume = findResumeByURL(db, profileURL)
+    if resume is None:
+        resume = resumeDB_pb2.Resume()
+
+    resume.name = nameRaw
+    resume.profileURL = profileURL
+    resume.rawResume = rawResume
+    resume.monthlySalary = int(monthlySalary)
+    # resume.companyName = role.split(" at ")
+    resume.aboutRaw = aboutRaw
+    resume.educationRaw = educationRaw
+    resume.educations.extend(lk_parser.extractEducations(educationRaw))
+    resume.experienceRaw = experienceRaw
+    resume.experiences.extend(lk_parser.extractExperiences(experienceRaw))
+    resume.licensesCertificationsRaw = licensesCertificationsRaw
+    resume.skillsEndorsementsRaw = skillsEndorsementsRaw
+
+    resumeExists = findResumeByURL(db, profileURL)
+    if resumeExists is None:
+        db.resumes.append(resume)
+
+    lk_parser.saveData(RESUMEDB_FILE_PB, db)
 
     return render_template('createResumePageResult.html', results=result)
+
+
+def findResumeByURL(db, profileURL):
+    for resume in db.resumes:
+        if resume.profileURL == profileURL:
+            return resume
+
+    return None
+
+    # resume = resumeDB_pb2.Resume()
+    # db.resumes.append(resume)
+    #
+    # return resume
 
 
 @app.route('/uploadResumeAction', methods=['POST'])
@@ -77,10 +118,10 @@ def uploadResumeAction():
     except:
         uploadfile = None
 
-    if uploadfile :
+    if uploadfile:
         uploadfilename = uploadFile(uploadfile)
         rawResume = upload_resume.extractResumeContent(uploadfilename)
-        result = upload_resume.insertResume(name,uploadfilename,rawResume)
+        result = upload_resume.insertResume(name, uploadfilename, rawResume)
     else:
         result = "No Profile to upload"
 
