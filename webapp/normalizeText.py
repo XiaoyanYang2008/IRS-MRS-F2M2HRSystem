@@ -1,10 +1,12 @@
 import re
 import unicodedata
+
 import inflect
-from nltk.tokenize import word_tokenize
+from autocorrect import spell
 from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
 
 
 def remove_between_square_brackets(text):
@@ -16,6 +18,12 @@ def denoise_text(text):
     return text
 
 
+def spellCorrect(words):
+    correctWords = []
+    for i in words:
+        correctWords.append(spell(i))
+    return " ".join(correctWords)
+
 def remove_non_ascii(words):
 #Remove non-ASCII characters from list of tokenized words
     new_words = []
@@ -25,8 +33,9 @@ def remove_non_ascii(words):
     return new_words
 
 
-def replace_numbers(words):
-#Replace all integer occurrences in list of tokenize words with textual representation
+def replace_numbers(string):
+    # Replace all integer occurrences in string with textual representation
+    words = string.split(" ")
     p = inflect.engine()
     new_words = []
     for word in words:
@@ -35,7 +44,7 @@ def replace_numbers(words):
             new_words.append(new_word)
         else:
             new_words.append(word)
-    return new_words
+    return " ".join(new_words)
 
 
 def remove_stopwords(words):

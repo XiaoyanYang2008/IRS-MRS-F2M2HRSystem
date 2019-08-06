@@ -3,8 +3,6 @@ import string
 
 import normalizeText
 import pandas
-from autocorrect import spell
-from bs4 import BeautifulSoup
 from gensim.summarization import summarize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import NearestNeighbors
@@ -17,23 +15,11 @@ class ResultElement:
         self.filename = filename
         self.score = score
 
-    def spellCorrect(string):
-        words = string.split(" ")
-        correctWords = []
-        for i in words:
-            correctWords.append(spell(i))
-        return " ".join(correctWords)
-
 
 def getfilepath(loc):
     temp = str(loc)
     temp = temp.replace('\\', '/')
     return temp
-
-
-def strip_html(text):
-    soup = BeautifulSoup(text, "html.parser")
-    return soup.get_text()
 
 
 def clearup(s, chars):
@@ -42,10 +28,11 @@ def clearup(s, chars):
 
 def normalize(words):
     words = words.lower()
+    words = normalizeText.replace_numbers(words)  # replace number to words
     words = words.translate(str.maketrans({key: None for key in string.punctuation})) #remove punctuation
     words = words.strip() #remove white space
+    # words = normalizeText.spellCorrect(words)
     words = normalizeText.remove_stopwords(words)
-    words = normalizeText.replace_numbers(words) # replace number to words
     words = normalizeText.remove_non_ascii(words)
     words = normalizeText.lemmatize_verbs(words)
     return words
@@ -69,7 +56,7 @@ def res(importantkey, optionalkey):
 
     Job_Desc_Imp = vector.toarray()
 
-    if len(r_optionalkey) != 0:
+    if len(optionalkey) != 0:
         try:
             optt = str(optionalkey)
             textopt = [optt]
@@ -81,26 +68,31 @@ def res(importantkey, optionalkey):
             textopt = 'None'
 
     df = pandas.read_csv("./db/resume_db.csv")
-    print(df)
+
 
     resume = df['rawResume']
     resume_vect = []
-    score = []
-    for row in resume:
+    resume_vect_Raw = []
 
-        t_resume = normalize(row)
-        t_resume = ' '.join(t_resume)
-        t_resume = t_resume.translate(str.maketrans('', '', string.punctuation))
-        t_resume = str(t_resume)
-        text_raw = str(row)
+    score_A = []
+    score_B = []
+    for row in resume:
+        t_raw = str(row)
         try:
-            tttt = summarize(text_raw, word_count=100)
-            text = [tttt]
+            tttt = summarize(t_raw, word_count=100)
+            text_raw = [tttt]
+            text = normalize(tttt)
+            t_resume = ' '.join(text)
+            t_resume = t_resume.translate(str.maketrans('', '', string.punctuation))
+            text = [t_resume]
+            vector_raw = vectorizer.transform(text_raw)
+            resume_vect_Raw.append(vector_raw.toarray())
             vector = vectorizer.transform(text)
             resume_vect.append(vector.toarray())
         except Exception as e:
             print(e)
             pass
+
     df['Score'] = ''
     for i in resume_vect:
         samples = i
@@ -108,16 +100,25 @@ def res(importantkey, optionalkey):
         neigh.fit(samples)
         NearestNeighbors(algorithm='auto', leaf_size=30)
         scorea = neigh.kneighbors(Job_Desc_Imp)[0][0].tolist()
+        score_A.append(scorea[0])
         if len(optionalkey) != 0:
             scoreb = neigh.kneighbors(Job_Desc_Opt)[0][0].tolist()
-            score.append(scorea[0] * 0.7 + scoreb[0] * 0.3)
-        else:
-            score.append(scorea[0])
+            score_B.append(scoreb[0])
 
-    df['Score'] = score
+    max_A = max(score_A)
+    df['Score_A'] = score_A
+    df['Score_A'] = df['Score_A'] / max_A
+
+    if len(optionalkey) != 0:
+        max_B = max(score_B)
+        df['Score_B'] = score_B
+        df['Score_B'] = df['Score_B'] / max_B
+        df['Score'] = df['Score_A'] * 0.7 + df['Score_B'] * 0.3
+    else:
+        df['Score'] = df['Score_A']
+
     df = df.sort_values(by=["Score"], ascending=False)
     df1 = df[['name','profileURL','Score']]
-    # print(df1)
 
     flask_return = []
 
@@ -129,7 +130,5 @@ def res(importantkey, optionalkey):
         rank = rank + 1
         res = ResultElement(rank, name, filename, score)
         flask_return.append(res)
-        # # res.printresult()
-        # print(f"Rank{res.rank+1} :\t {res.filename}")
 
     return flask_return

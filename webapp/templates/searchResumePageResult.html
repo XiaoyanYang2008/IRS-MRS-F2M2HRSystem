@@ -83,13 +83,13 @@
                   <th>Score</th>
 			  </tr>
 			</thead>
-			{% for n in results :%}
+            {% for m in results :%}
 				<tbody>
 			  		<tr>
-						<td>{{n.rank}}</td>
-                        <td>{{n.name}}</td>
+                        <td>{{m.rank}}</td>
+                        <td>{{m.name}}</td>
                         {% if 'http://' in m.filename %}
-						<td><a href="{{m.filename}}">{{m.filename}}</a></td>
+                        <td><a href="{{n.filename}}">{{m.filename}}</a></td>
                         {% else %}
                         <td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
                         {% endif%}
