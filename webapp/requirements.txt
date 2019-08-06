@@ -1,0 +1,13 @@
+flask
+requests
+werkzeug
+pdfminer.six
+python-docx
+bs4
+sklearn
+pandas
+gensim
+protobuf
+inflect
+nltk
+autocorrect
