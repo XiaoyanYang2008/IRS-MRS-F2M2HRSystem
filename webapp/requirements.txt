@@ -3,7 +3,6 @@ requests
 werkzeug
 pdfminer.six
 python-docx
-csv
 bs4
 sklearn
 pandas
