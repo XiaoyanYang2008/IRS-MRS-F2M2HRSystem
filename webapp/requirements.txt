@@ -10,3 +10,4 @@ gensim
 protobuf
 inflect
 nltk
+autocorrect
