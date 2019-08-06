@@ -8,3 +8,5 @@ sklearn
 pandas
 gensim
 protobuf
+inflect
+nltk
