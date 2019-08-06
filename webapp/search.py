@@ -11,10 +11,11 @@ from sklearn.neighbors import NearestNeighbors
 
 
 class ResultElement:
-    def __init__(self, rank, name, filename):
+    def __init__(self, rank, name, filename, score):
         self.rank = rank
         self.name = name
         self.filename = filename
+        self.score = score
 
     def spellCorrect(string):
         words = string.split(" ")
@@ -68,14 +69,13 @@ def res(importantkey, optionalkey):
 
     Job_Desc_Imp = vector.toarray()
 
-    if len(optionalkey) != 0:
+    if len(r_optionalkey) != 0:
         try:
             optt = str(optionalkey)
             textopt = [optt]
             vectorizerOpt = TfidfVectorizer(stop_words='english')
             vectorizerOpt.fit(textopt)
             vectorOpt = vectorizer.transform(textopt)
-
             Job_Desc_Opt = vectorOpt.toarray()
         except:
             textopt = 'None'
@@ -116,25 +116,19 @@ def res(importantkey, optionalkey):
 
     df['Score'] = score
     df = df.sort_values(by=["Score"], ascending=False)
+    df1 = df[['name','profileURL','Score']]
+    # print(df1)
 
     flask_return = []
-    for row in df:
-            print(row[1])
-    for row in df:
-            print(row[2])
-    for row in df:
-            print(row[3])
 
-    # for i in enumerate(df):
-        # print("Rank\t" , n+1, ":\t" , i)
-        # flask_return.append(str("Rank\t" , n+1, ":\t" , i))
-        # n = i
-        # name = df[i]
-        # filename = df[i][2]
-        # #name = name.split('.')[0]
-        # rank = i+1
-        # res = ResultElement(rank, name, filename)
-        # flask_return.append(res)
+    rank = 0
+    for idx, row in df1.head().iterrows():
+        name = row['name']
+        filename = row['profileURL']
+        score = row['Score']
+        rank = rank + 1
+        res = ResultElement(rank, name, filename, score)
+        flask_return.append(res)
         # # res.printresult()
         # print(f"Rank{res.rank+1} :\t {res.filename}")
 

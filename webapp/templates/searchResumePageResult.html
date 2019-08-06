@@ -47,9 +47,10 @@
         <table class="table-hover">
 			<thead>
 			  <tr>
-				<th>Rank</th>
+                  <th>Rank</th>
                   <th>Name</th>
-				<th>Resume</th>
+                  <th>Resume</th>
+                  <th>Match Rate</th>
 			  </tr>
 			</thead>
 			{% for m in results :%}
@@ -57,7 +58,12 @@
 			  		<tr>
 						<td>{{m.rank}}</td>
                         <td>{{m.name}}</td>
-						<td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
+                        {% if 'http://' in m.filename %}
+						<td><a href="{{m.filename}}">{{m.filename}}</a></td>
+                        {% else %}
+                        <td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
+                        {% endif%}
+                        <td>{{m.score}}</td>
 			  		</tr>
 				</tbody>
 			{% endfor %}
@@ -71,9 +77,10 @@
         <table class="table-hover">
 			<thead>
 			  <tr>
-				<th>Rank</th>
-                <th>Name</th>
-				<th>Resume</th>
+                  <th>Rank</th>
+                  <th>Name</th>
+                  <th>Resume</th>
+                  <th>Score</th>
 			  </tr>
 			</thead>
 			{% for n in results :%}
@@ -81,7 +88,12 @@
 			  		<tr>
 						<td>{{n.rank}}</td>
                         <td>{{n.name}}</td>
-						<td><a href="{{url_for('custom_static', filename=n.filename)}}">{{n.filename}}</a></td>
+                        {% if 'http://' in m.filename %}
+						<td><a href="{{m.filename}}">{{m.filename}}</a></td>
+                        {% else %}
+                        <td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
+                        {% endif%}
+                        <td>{{m.score}}</td>
 			  		</tr>
 				</tbody>
 			{% endfor %}

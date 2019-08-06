@@ -4,7 +4,7 @@ import lk_parser
 import resumeDB_pb2
 import search
 import upload_resume
-from flask import Flask, render_template, request
+from flask import (Flask, render_template, request, url_for, send_from_directory)
 from werkzeug import secure_filename
 
 RESUMEDB_FILE_PB = "resumeDB.pb"
@@ -156,6 +156,9 @@ def searchResumeAction():
         result = "No 'Mandatory Search Key' input"
         return render_template('searchResumePageResult.html', results=result)
 
+@app.route('/Resumes/<path:filename>')
+def custom_static(filename):
+    return send_from_directory('./Resumes', filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
