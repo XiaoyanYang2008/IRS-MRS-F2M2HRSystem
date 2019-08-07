@@ -3,7 +3,6 @@ import string
 
 import normalizeText
 import pandas
-from gensim.summarization import summarize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import NearestNeighbors
 
@@ -31,7 +30,6 @@ def normalize(words):
     words = normalizeText.replace_numbers(words)  # replace number to words
     words = words.translate(str.maketrans({key: None for key in string.punctuation})) #remove punctuation
     words = words.strip() #remove white space
-    # words = normalizeText.spellCorrect(words)
     words = normalizeText.remove_stopwords(words)
     words = normalizeText.remove_non_ascii(words)
     words = normalizeText.lemmatize_verbs(words)
@@ -79,13 +77,11 @@ def res(importantkey, optionalkey):
     for row in resume:
         t_raw = str(row)
         try:
-            tttt = summarize(t_raw, word_count=100)
-            text_raw = [tttt]
-            text = normalize(tttt)
+            text = normalize(t_raw)
             t_resume = ' '.join(text)
             t_resume = t_resume.translate(str.maketrans('', '', string.punctuation))
             text = [t_resume]
-            vector_raw = vectorizer.transform(text_raw)
+            vector_raw = vectorizer.transform(text)
             resume_vect_Raw.append(vector_raw.toarray())
             vector = vectorizer.transform(text)
             resume_vect.append(vector.toarray())
