@@ -58,12 +58,13 @@
 			  		<tr>
 						<td>{{m.rank}}</td>
                         <td>{{m.name}}</td>
-                        {% if 'http://' in m.filename %}
-						<td><a href="{{m.filename}}">{{m.filename}}</a></td>
+                        {% if 'https://' in m.filename %}
+                        <td><a href="{{m.filename}}" target="_blank">{{m.filename}}</a></td>
                         {% else %}
-                        <td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
+                        <td><a href="{{url_for('custom_static', filename=m.filename)}}"
+                               target="_blank">{{m.filename}}</a></td>
                         {% endif%}
-                        <td>{{m.score}}</td>
+                        <td>{{"%.3f"|format(m.score)}}</td>
 			  		</tr>
 				</tbody>
 			{% endfor %}
@@ -71,7 +72,7 @@
         <div class="row">
             <div class="col-sm">&nbsp;</div>
         </div>
-        <div class="row">
+        <!-- div class="row">
             <div class="col-sm" align="left">Recommended Resumes</div>
         </div>
         <table class="table-hover">
@@ -88,7 +89,7 @@
 			  		<tr>
                         <td>{{m.rank}}</td>
                         <td>{{m.name}}</td>
-                        {% if 'http://' in m.filename %}
+                        {% if 'https://' in m.filename %}
                         <td><a href="{{m.filename}}">{{m.filename}}</a></td>
                         {% else %}
                         <td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
@@ -104,7 +105,7 @@
         </div>
         <div class="row">
             <div class="col-sm" align="left"><a href="/">Back to Menu</a></div>
-        </div>
+        </div-->
     </div>
 </div>
 </body>
