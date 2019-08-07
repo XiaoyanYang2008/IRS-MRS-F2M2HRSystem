@@ -93,7 +93,6 @@ def res(importantkey, optionalkey):
             print(e)
             pass
 
-    df['Score'] = ''
     for i in resume_vect:
         samples = i
         neigh = NearestNeighbors(n_neighbors=1)
@@ -105,19 +104,15 @@ def res(importantkey, optionalkey):
             scoreb = neigh.kneighbors(Job_Desc_Opt)[0][0].tolist()
             score_B.append(scoreb[0])
 
-    max_A = max(score_A)
     df['Score_A'] = score_A
-    df['Score_A'] = df['Score_A'] / max_A
 
     if len(optionalkey) != 0:
-        max_B = max(score_B)
         df['Score_B'] = score_B
-        df['Score_B'] = df['Score_B'] / max_B
         df['Score'] = df['Score_A'] * 0.7 + df['Score_B'] * 0.3
     else:
         df['Score'] = df['Score_A']
 
-    df = df.sort_values(by=["Score"], ascending=False)
+    df = df.sort_values(by=["Score"])
     df1 = df[['name','profileURL','Score']]
 
     flask_return = []
