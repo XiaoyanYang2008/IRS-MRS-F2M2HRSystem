@@ -1,11 +1,12 @@
 import os
 
+from flask import (Flask, render_template, request, send_from_directory)
+from werkzeug import secure_filename
+
 import lk_parser
 import resumeDB_pb2
 import search
 import upload_resume
-from flask import (Flask, render_template, request, send_from_directory)
-from werkzeug import secure_filename
 
 RESUMEDB_FILE_PB = "resumeDB.pb"
 
@@ -54,8 +55,8 @@ def createResumeAction():
 
     # rawResume can be searched by KNN like pdf, docx formats.
     # pdf, docx text should be saved into rawResume.
-    rawResume = nameRaw + role + "\r\nmonthly salary: "
-    monthlySalary + aboutRaw + experienceRaw + licensesCertificationsRaw + skillsEndorsementsRaw
+    rawResume = nameRaw + role + "\r\nmonthly salary: " \
+                + monthlySalary + aboutRaw + experienceRaw + licensesCertificationsRaw + skillsEndorsementsRaw
 
     try:
         uploadfile = request.files['uploadfile']

@@ -1,10 +1,11 @@
 import re
 import string
 
-import normalizeText
 import pandas
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import NearestNeighbors
+
+import normalizeText
 
 
 class ResultElement:
@@ -114,7 +115,7 @@ def res(importantkey, optionalkey):
     flask_return = []
 
     rank = 0
-    for idx, row in df1.head().iterrows():
+    for idx, row in df1.head(20).iterrows():
         name = row['name']
         filename = row['profileURL']
         score = row['Score']
