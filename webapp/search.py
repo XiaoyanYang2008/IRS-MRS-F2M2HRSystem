@@ -1,19 +1,19 @@
 import re
 import string
 
+import normalizeText
 import pandas
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import NearestNeighbors
 
-import normalizeText
-
 
 class ResultElement:
-    def __init__(self, rank, name, filename, score):
+    def __init__(self, rank, name, filename, score, type):
         self.rank = rank
         self.name = name
         self.filename = filename
         self.score = score
+        self.type = type
 
 
 def getfilepath(loc):
@@ -35,6 +35,18 @@ def normalize(words):
     words = normalizeText.remove_non_ascii(words)
     words = normalizeText.lemmatize_verbs(words)
     return words
+
+
+hasA = 'noA'
+hasB = 'noB'
+
+
+def gethasA():
+    return hasA
+
+
+def gethasB():
+    return hasB
 
 
 def res(importantkey, optionalkey):
@@ -115,12 +127,21 @@ def res(importantkey, optionalkey):
     flask_return = []
 
     rank = 0
+    global hasA
+    global hasB
     for idx, row in df1.head(20).iterrows():
         name = row['name']
         filename = row['profileURL']
         score = row['Score']
+        if score < 1:
+            type = 'typeA'
+            hasA = 'hasA'
+        elif (score >= 1 and score < 2):
+            type = 'typeB'
+            hasB = 'hasB'
+        else:
+            type = 'noType'
         rank = rank + 1
-        res = ResultElement(rank, name, filename, score)
+        res = ResultElement(rank, name, filename, score, type)
         flask_return.append(res)
-
     return flask_return

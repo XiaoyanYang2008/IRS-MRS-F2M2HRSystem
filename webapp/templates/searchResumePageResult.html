@@ -34,19 +34,32 @@
             <div class="col-sm"><h3 align="left">Search Resume Page Result</h3></div>
         </div>
         <div class="row">
-            <div class="col-sm">&nbsp;</div>
+            <div class="col-sm">&nbsp</div>
         </div>
         {% if results == null or results == "No 'Mandatory Search Key' input" %}
         <div class="row">
-            <div class="col-sm" align="left">{{results }}</div>
+            <div class="col-sm" align="left">{{results}}</div>
+        </div>
+        <div class="row">
+            <div class="col-sm"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm">&nbsp</div>
+        </div>
+        <div class="row">
+            <div class="col-sm" align="left"><a href="/searchResumePage">Back to Search</a></div>
+        </div>
+        <div class="row">
+            <div class="col-sm" align="left"><a href="/">Back to Menu</a></div>
         </div>
         {% else %}
         <div class="row">
             <div class="col-sm" align="left">Best Match Resumes</div>
         </div>
+        {% if hasA == "hasA" %}
         <table class="table-hover">
 			<thead>
-			  <tr>
+            <tr style="text-align:left">
                   <th>Rank</th>
                   <th>Name</th>
                   <th>Resume</th>
@@ -54,8 +67,9 @@
 			  </tr>
 			</thead>
 			{% for m in results :%}
+            {% if m.type == 'typeA' %}
 				<tbody>
-			  		<tr>
+                <tr style="text-align:left">
 						<td>{{m.rank}}</td>
                         <td>{{m.name}}</td>
                         {% if 'https://' in m.filename %}
@@ -67,17 +81,24 @@
                         <td>{{"%.3f"|format(m.score)}}</td>
 			  		</tr>
 				</tbody>
+            {% endif%}
 			{% endfor %}
-		</table>
+        </table>
+        {% else %}
+        <div class="row">
+            <div class="col-sm" align="left">Not found best match resumes</div>
+        </div>
+        {% endif %}
         <div class="row">
             <div class="col-sm">&nbsp;</div>
         </div>
-        <!-- div class="row">
+        <div class="row">
             <div class="col-sm" align="left">Recommended Resumes</div>
         </div>
+        {% if hasB == "hasB" %}
         <table class="table-hover">
 			<thead>
-			  <tr>
+            <tr style="text-align:left">
                   <th>Rank</th>
                   <th>Name</th>
                   <th>Resume</th>
@@ -85,20 +106,26 @@
 			  </tr>
 			</thead>
             {% for m in results :%}
+            {% if m.type == 'typeB' %}
 				<tbody>
-			  		<tr>
+                <tr style="text-align:left">
                         <td>{{m.rank}}</td>
-                        <td>{{m.name}}</td>
+                    <td style="text-align:left">{{m.name}}</td>
                         {% if 'https://' in m.filename %}
                         <td><a href="{{m.filename}}">{{m.filename}}</a></td>
                         {% else %}
                         <td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
                         {% endif%}
-                        <td>{{m.score}}</td>
+                    <td>{{"%.3f"|format(m.score)}}</td>
 			  		</tr>
 				</tbody>
+            {% endif %}
 			{% endfor %}
-		</table>
+        </table>
+        {% else %}
+        <div class="row">
+            <div class="col-sm" align="left">Not found recommended resumes</div>
+        </div>
         {% endif %}
         <div class="row">
             <div class="col-sm">&nbsp;</div>
@@ -106,6 +133,7 @@
         <div class="row">
             <div class="col-sm" align="left"><a href="/">Back to Menu</a></div>
         </div-->
+            {% endif %}
     </div>
 </div>
 </body>

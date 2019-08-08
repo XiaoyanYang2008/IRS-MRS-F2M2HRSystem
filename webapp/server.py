@@ -1,12 +1,11 @@
 import os
 
-from flask import (Flask, render_template, request, send_from_directory)
-from werkzeug import secure_filename
-
 import lk_parser
 import resumeDB_pb2
 import search
 import upload_resume
+from flask import (Flask, render_template, request, send_from_directory)
+from werkzeug import secure_filename
 
 RESUMEDB_FILE_PB = "resumeDB.pb"
 
@@ -152,7 +151,9 @@ def searchResumeAction():
 
     if searchImportantKey:
         result = search.res(searchImportantKey, searchOptionKey)
-        return render_template('searchResumePageResult.html', results=result)
+        hasA = search.gethasA()
+        hasB = search.gethasB()
+        return render_template('searchResumePageResult.html', results=result, hasA=hasA, hasB=hasB)
     else:
         result = "No 'Mandatory Search Key' input"
         return render_template('searchResumePageResult.html', results=result)
