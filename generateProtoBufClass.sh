@@ -7,4 +7,4 @@
 # sudo pip3 install protobuf
 # 
 /opt/protobuf/bin/protoc -I=. --python_out=webapp/ resumeDB.proto
-
+/opt/protobuf/bin/protoc -I=. --java_out=optaPlanner/src resumeDB.proto
