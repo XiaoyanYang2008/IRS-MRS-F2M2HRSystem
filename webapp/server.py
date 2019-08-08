@@ -7,6 +7,8 @@ import upload_resume
 from flask import (Flask, render_template, request, send_from_directory)
 from werkzeug import secure_filename
 
+SECTION_SEPERATOR = " \r\n"
+
 RESUMEDB_FILE_PB = "resumeDB.pb"
 
 app = Flask(__name__)
@@ -38,7 +40,6 @@ def uploadResumePage():
 def createResumeAction():
     # print(request.form)
 
-    db = lk_parser.loadData(RESUMEDB_FILE_PB)
 
     nameRaw = request.form['name']
     profileURL = request.form['profileURL']
@@ -54,8 +55,10 @@ def createResumeAction():
 
     # rawResume can be searched by KNN like pdf, docx formats.
     # pdf, docx text should be saved into rawResume.
-    rawResume = nameRaw + role + "\r\nmonthly salary: " \
-                + monthlySalary + aboutRaw + experienceRaw + licensesCertificationsRaw + skillsEndorsementsRaw
+    rawResume = nameRaw + SECTION_SEPERATOR + role + SECTION_SEPERATOR + "monthlysalary: " \
+                + monthlySalary + SECTION_SEPERATOR + aboutRaw + SECTION_SEPERATOR + \
+                experienceRaw + SECTION_SEPERATOR + licensesCertificationsRaw + SECTION_SEPERATOR + \
+                skillsEndorsementsRaw
 
     try:
         uploadfile = request.files['uploadfile']
@@ -70,6 +73,8 @@ def createResumeAction():
 
     result = upload_resume.insertResume(nameRaw, URL, rawResume)
 
+    # For protobuf DB.
+    db = lk_parser.loadData(RESUMEDB_FILE_PB)
     resume = findResumeByURL(db, profileURL)
     if resume is None:
         resume = resumeDB_pb2.Resume()

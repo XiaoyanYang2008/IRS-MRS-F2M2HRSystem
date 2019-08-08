@@ -125,4 +125,8 @@ dmypy.json
 
 #pycharm
 .idea/
-/bin/
+
+#java
+bin/
+.settings/
+
