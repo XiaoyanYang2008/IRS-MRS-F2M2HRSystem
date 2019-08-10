@@ -1,6 +1,6 @@
 import os
 
-from flask import (Flask, render_template, request, send_from_directory)
+from flask import (Flask, render_template, request, send_from_directory, jsonify)
 from werkzeug import secure_filename
 
 import lk_parser
@@ -157,7 +157,7 @@ def searchResumeAction():
 
     if searchImportantKey:
         # result = search.res(searchImportantKey, searchOptionKey)
-        result = search.search(searchImportantKey)
+        result = search.ui_search(searchImportantKey)
 
         hasA = search.gethasA()
         hasB = search.gethasB()
@@ -170,6 +170,14 @@ def searchResumeAction():
 @app.route('/Resumes/<path:filename>')
 def custom_static(filename):
     return send_from_directory('./Resumes', filename)
+
+
+@app.route('/api_search', methods=['GET', 'POST'])
+def api_search():
+    search_keywords = request.json['search']
+    result_df = search.search_by_tfidf(search_keywords)
+
+    return jsonify({'result': result_df.to_json()})
 
 
 if __name__ == '__main__':

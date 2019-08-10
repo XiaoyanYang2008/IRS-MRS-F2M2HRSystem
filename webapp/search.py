@@ -52,37 +52,11 @@ def gethasB():
     return hasB
 
 
-def search(importantSearch):
+def ui_search(important_search):
     global hasA
     hasA = 'hasA'
-    importantSearch = normalize(importantSearch)
-
-    resumeDF = pd.read_csv("./db/resume_db.csv")
-    resumeDF.drop_duplicates(subset="profileURL",
-                             keep='last', inplace=True)
-
-    resumes = resumeDF['rawResume']
-    resumes = resumes.apply(normalize)
-
-    # TODO: search heywords can be comma seperated, input this method to see what result matched what keywords.
-    #  May help to explain results matched with which keywords, as long as none zero.
-    # Example, zaki matched java, but other people doesn't matched java.
-
-    tfidfVectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 3))
-    tfidfVectorizer.fit(resumes.tolist())
-    resume_sm = tfidfVectorizer.transform(resumes.tolist())
-
-    search_sm = tfidfVectorizer.transform([importantSearch])
-    vals = cosine_similarity(search_sm, resume_sm)
-    df = resumeDF
-    df['Score'] = vals[0]
-    # idx = vals.argsort()[0][-1]
-    #
-    # print(type(vals))
-    # print(resumeDF.iloc[[idx]])
-    df = df.sort_values(by=["Score"], ascending=False)
-    df1 = df[['name', 'profileURL', 'Score']]
-    print(df1)
+    df1 = search_by_tfidf(important_search)
+    # print(df1)
 
     flask_return = []
 
@@ -93,7 +67,40 @@ def search(importantSearch):
         score = row['Score']
         rank = rank + 1
         flask_return.append(ResultElement(rank, name, filename, score, 'typeA'))
+
     return flask_return
+
+
+def search_by_tfidf(important_search):
+    important_search = normalize(important_search)
+    resume_df = pd.read_csv("./db/resume_db.csv")
+    resume_df.drop_duplicates(subset="profileURL",
+                              keep='last', inplace=True)
+    resumes = resume_df['rawResume']
+    resume_sm, tfidf_vectorizer = build_tfidf_vectorizer(resumes)
+    search_sm = tfidf_vectorizer.transform([important_search])
+    vals = cosine_similarity(search_sm, resume_sm)
+    df = resume_df
+    df['Score'] = vals[0]
+    # idx = vals.argsort()[0][-1]
+    #
+    # print(type(vals))
+    # print(resumeDF.iloc[[idx]])
+    df = df.sort_values(by=["Score"], ascending=False)
+    df1 = df[['name', 'profileURL', 'Score']]
+    return df1
+
+
+def build_tfidf_vectorizer(resumes):
+    resumes = resumes.apply(normalize)
+    # TODO: search heywords can be comma seperated, input this method to see what result matched what keywords.
+    #  May help to explain results matched with which keywords, as long as none zero.
+    # Example, zaki matched java, but other people doesn't matched java. so, java keywords under zaki has a score
+
+    tfidf_vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 3))
+    tfidf_vectorizer.fit(resumes.tolist())
+    resume_sm = tfidf_vectorizer.transform(resumes.tolist())
+    return resume_sm, tfidf_vectorizer
 
 
 def res(importantkey, optionalkey):
