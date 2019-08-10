@@ -174,10 +174,10 @@ def custom_static(filename):
 
 @app.route('/api_search', methods=['GET', 'POST'])
 def api_search():
-    search_keywords = request.json['search']
+    search_keywords = request.form['search']
     result_df = search.search_by_tfidf(search_keywords)
 
-    return jsonify({'result': result_df.to_json()})
+    return jsonify(result_df.to_csv())
 
 
 if __name__ == '__main__':

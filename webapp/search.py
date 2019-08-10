@@ -82,12 +82,18 @@ def search_by_tfidf(important_search):
     vals = cosine_similarity(search_sm, resume_sm)
     df = resume_df
     df['Score'] = vals[0]
+
+    if max(df['Score'] != 0):
+        df['NScore'] = df['Score'] / max(df['Score'])
+    else:
+        df['NScore'] = df['Score']
+
     # idx = vals.argsort()[0][-1]
     #
     # print(type(vals))
     # print(resumeDF.iloc[[idx]])
     df = df.sort_values(by=["Score"], ascending=False)
-    df1 = df[['name', 'profileURL', 'Score']]
+    df1 = df[['name', 'profileURL', 'Score', 'NScore']]
     return df1
 
 
