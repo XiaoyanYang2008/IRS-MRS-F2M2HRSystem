@@ -1,11 +1,12 @@
 import os
 
+from flask import (Flask, render_template, request, send_from_directory)
+from werkzeug import secure_filename
+
 import lk_parser
 import resumeDB_pb2
 import search
 import upload_resume
-from flask import (Flask, render_template, request, send_from_directory)
-from werkzeug import secure_filename
 
 SECTION_SEPERATOR = " \r\n"
 
@@ -155,7 +156,9 @@ def searchResumeAction():
     searchOptionKey = request.form['optionKey']
 
     if searchImportantKey:
-        result = search.res(searchImportantKey, searchOptionKey)
+        # result = search.res(searchImportantKey, searchOptionKey)
+        result = search.search(searchImportantKey)
+
         hasA = search.gethasA()
         hasB = search.gethasB()
         return render_template('searchResumePageResult.html', results=result, hasA=hasA, hasB=hasB)

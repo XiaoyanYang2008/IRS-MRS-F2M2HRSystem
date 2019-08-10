@@ -1,10 +1,12 @@
 import re
 import string
 
-import normalizeText
-import pandas
+import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.neighbors import NearestNeighbors
+
+import normalizeText
 
 
 class ResultElement:
@@ -29,11 +31,12 @@ def clearup(s, chars):
 def normalize(words):
     words = words.lower()
     words = normalizeText.replace_numbers(words)  # replace number to words
-    words = words.translate(str.maketrans({key: None for key in string.punctuation})) #remove punctuation
-    words = words.strip() #remove white space
+    words = words.translate(str.maketrans({key: None for key in string.punctuation}))  # remove punctuation
+    words = words.strip()  # remove white space
     words = normalizeText.remove_stopwords(words)
     words = normalizeText.remove_non_ascii(words)
     words = normalizeText.lemmatize_verbs(words)
+    words = ' '.join(words)
     return words
 
 
@@ -47,6 +50,50 @@ def gethasA():
 
 def gethasB():
     return hasB
+
+
+def search(importantSearch):
+    global hasA
+    hasA = 'hasA'
+    importantSearch = normalize(importantSearch)
+
+    resumeDF = pd.read_csv("./db/resume_db.csv")
+    resumeDF.drop_duplicates(subset="profileURL",
+                             keep='last', inplace=True)
+
+    resumes = resumeDF['rawResume']
+    resumes = resumes.apply(normalize)
+
+    # TODO: search heywords can be comma seperated, input this method to see what result matched what keywords.
+    #  May help to explain results matched with which keywords, as long as none zero.
+    # Example, zaki matched java, but other people doesn't matched java.
+
+    tfidfVectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 3))
+    tfidfVectorizer.fit(resumes.tolist())
+    resume_sm = tfidfVectorizer.transform(resumes.tolist())
+
+    search_sm = tfidfVectorizer.transform([importantSearch])
+    vals = cosine_similarity(search_sm, resume_sm)
+    df = resumeDF
+    df['Score'] = vals[0]
+    # idx = vals.argsort()[0][-1]
+    #
+    # print(type(vals))
+    # print(resumeDF.iloc[[idx]])
+    df = df.sort_values(by=["Score"], ascending=False)
+    df1 = df[['name', 'profileURL', 'Score']]
+    print(df1)
+
+    flask_return = []
+
+    rank = 0
+    for idx, row in df1.head(20).iterrows():
+        name = row['name']
+        filename = row['profileURL']
+        score = row['Score']
+        rank = rank + 1
+        flask_return.append(ResultElement(rank, name, filename, score, 'typeA'))
+    return flask_return
 
 
 def res(importantkey, optionalkey):
@@ -78,8 +125,7 @@ def res(importantkey, optionalkey):
         except:
             textopt = 'None'
 
-    df = pandas.read_csv("./db/resume_db.csv")
-
+    df = pd.read_csv("./db/resume_db.csv")
 
     resume = df['rawResume']
     resume_vect = []
@@ -90,8 +136,8 @@ def res(importantkey, optionalkey):
     for row in resume:
         t_raw = str(row)
         try:
-            text = normalize(t_raw)
-            t_resume = ' '.join(text)
+            t_resume = normalize(t_raw)
+            # t_resume = ' '.join(text) # done in normalize()
             t_resume = t_resume.translate(str.maketrans('', '', string.punctuation))
             text = [t_resume]
             vector_raw = vectorizer.transform(text)
@@ -122,7 +168,7 @@ def res(importantkey, optionalkey):
         df['Score'] = df['Score_A']
 
     df = df.sort_values(by=["Score"])
-    df1 = df[['name','profileURL','Score']]
+    df1 = df[['name', 'profileURL', 'Score']]
 
     flask_return = []
 
