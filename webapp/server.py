@@ -41,7 +41,6 @@ def uploadResumePage():
 def createResumeAction():
     # print(request.form)
 
-
     nameRaw = request.form['name']
     profileURL = request.form['profileURL']
     role = request.form['role']
@@ -148,6 +147,7 @@ def searchResumeAction():
     # print(searchresult.form)
 
     searchImportantKey = request.form['importantKey']
+    algorithm_type = request.form['algorithmType']
     try:
         searchImportantKey = request.form['importantKey']
     except:
@@ -156,8 +156,11 @@ def searchResumeAction():
     searchOptionKey = request.form['optionKey']
 
     if searchImportantKey:
-        # result = search.res(searchImportantKey, searchOptionKey)
-        result = search.ui_search(searchImportantKey)
+
+        if "KNN" == algorithm_type:
+            result = search.res(searchImportantKey, searchOptionKey)
+        elif "cosinesim" == algorithm_type:
+            result = search.ui_search(searchImportantKey)
 
         hasA = search.gethasA()
         hasB = search.gethasB()

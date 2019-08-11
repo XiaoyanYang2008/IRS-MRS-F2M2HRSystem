@@ -139,6 +139,8 @@ def res(importantkey, optionalkey):
             textopt = 'None'
 
     df = pd.read_csv("./db/resume_db.csv")
+    df.drop_duplicates(subset="profileURL",
+                       keep='last', inplace=True)
 
     resume = df['rawResume']
     resume_vect = []
@@ -182,7 +184,7 @@ def res(importantkey, optionalkey):
 
     df = df.sort_values(by=["Score"])
     df1 = df[['name', 'profileURL', 'Score']]
-
+    print(df1)
     flask_return = []
 
     rank = 0
