@@ -29,13 +29,21 @@ def index():
 
 @app.route('/createResumePage')
 def createResumePage():
-    return render_template('createResumePage.html')
+    return render_template('createResumePage.html', resume=resumeDB_pb2.Resume())
 
 
 @app.route('/uploadResumePage')
 def uploadResumePage():
     return render_template('uploadResumePage.html')
 
+
+@app.route('/editResume')
+def editResume():
+    profileURL = request.args.get('profileURL')
+    db = lk_parser.loadData(RESUMEDB_FILE_PB)
+    resume = findResumeByURL(db, profileURL)
+
+    return render_template('createResumePage.html', resume=resume)
 
 @app.route('/createResumeAction', methods=['POST'])
 def createResumeAction():
@@ -82,7 +90,7 @@ def createResumeAction():
     resume.name = nameRaw
     resume.profileURL = profileURL
     resume.rawResume = rawResume
-    resume.monthlySalary = int(monthlySalary)
+    resume.monthlySalary = float(monthlySalary)
 
     if role.find(' at ') != -1:
         resume.companyName = role.split(" at ")[1]

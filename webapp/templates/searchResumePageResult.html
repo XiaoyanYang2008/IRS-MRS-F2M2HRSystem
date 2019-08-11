@@ -71,10 +71,11 @@
 				<tbody>
                 <tr style="text-align:left">
 						<td>{{m.rank}}</td>
-                        <td>{{m.name}}</td>
                         {% if 'https://' in m.filename %}
+                    <td><a href="{{url_for('editResume',profileURL=m.filename)}}">{{m.name}}</a></td>
                         <td><a href="{{m.filename}}" target="_blank">{{m.filename}}</a></td>
                         {% else %}
+                    <td>{{m.name}}</td>
                         <td><a href="{{url_for('custom_static', filename=m.filename)}}"
                                target="_blank">{{m.filename}}</a></td>
                         {% endif%}

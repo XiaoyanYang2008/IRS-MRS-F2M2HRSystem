@@ -141,9 +141,9 @@ def extractAnExperienceData(anExperience):
         anExperience = anExperience.replace(SECTION_EXPERIENCE_TOKEN, "")
 
     # sections = anExperience.split("\r\n")
-
+    print(anExperience)
     exp = resumeDB_pb2.Experience()
-    exp.title = locateData("\r\n(.*)\r\n" + SECTION_EXPERIENCE_COMPANY_NAME_TOKEN, anExperience)
+    exp.title = locateData("(.*)\r\n" + SECTION_EXPERIENCE_COMPANY_NAME_TOKEN, anExperience)
 
     # Title
     print(exp.title)
@@ -153,7 +153,7 @@ def extractAnExperienceData(anExperience):
 
     # Company
     exp.companyName = locateData("\r\n" + SECTION_EXPERIENCE_COMPANY_NAME_TOKEN + "(.*)\r\n", anExperience)
-    print(exp.companyName)
+    # print(exp.companyName)
 
     # Dates Employed
     exp.datesEmployedText = locateData("\r\nDates Employed(.*)\r\n", anExperience)
@@ -164,7 +164,7 @@ def extractAnExperienceData(anExperience):
 
     # Location search
     exp.location = locateData("\r\nLocation(.*)\r\n", anExperience)
-    print(exp.location)
+    # print(exp.location)
 
     # experienceText
     # p = re.compile("\r\nLocation(.*)See [less|more]", re.DOTALL)

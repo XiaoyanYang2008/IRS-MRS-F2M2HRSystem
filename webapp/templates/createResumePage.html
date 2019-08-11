@@ -28,6 +28,9 @@
 
 
 
+
+
+
     </style>
 </head>
 <body class="bg-light">
@@ -47,7 +50,8 @@
                     <div class="col-sm-1" align="left"><label for="name">Name </label></div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-7"><input class="form-control" id="name" maxlength="100" name="name"></div>
+                    <div class="col-sm-7"><input class="form-control" id="name" maxlength="100" name="name"
+                                                 value="{{resume.name}}"></div>
                     <div class="col-sm"></div>
                 </div>
                 <div class="row">
@@ -59,7 +63,7 @@
                 <div class="row">
 
                     <div class="col-sm-7"><input class="form-control" id="profileURL" maxlength="100" name="profileURL"
-                                                 placeholder="https://....."></div>
+                                                 value="{{resume.profileURL}}" placeholder="https://....."></div>
                     <div class="col-sm"></div>
                 </div>
                 <div class="row">
@@ -71,6 +75,7 @@
                 <div class="row">
 
                     <div class="col-sm-7"><input class="form-control" id="role" maxlength="100" name="role"
+                                                 value="{{resume.title}} at {{resume.companyName}}"
                                                  placeholder="what role at which company?"></div>
                     <div class="col-sm"></div>
                 </div>
@@ -83,7 +88,8 @@
                 <div class="row">
 
                     <div class="col-sm-7"><input class="form-control" type="number" id="monthlySalary"
-                                                 name="monthlySalary" step="100" min="0">
+                                                 name="monthlySalary" step="100" min="0"
+                                                 value="{{resume.monthlySalary}}">
                     </div>
                     <div class="col-sm"></div>
                 </div>
@@ -95,7 +101,7 @@
                     <div class="col-sm"></div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-7"><textarea class="form-control" id="about" name="about" rows="5"></textarea>
+                    <div class="col-sm-7"><textarea class="form-control" id="about" name="about" rows="5">{{resume.aboutRaw}}</textarea>
                     </div>
                     <div class="col-sm"></div>
                 </div>
@@ -108,7 +114,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-7"><textarea class="form-control" id="experience" name="experience"
-                                                    rows="5"></textarea></div>
+                                                    rows="5">{{resume.experienceRaw}}</textarea></div>
                     <div class="col-sm"></div>
                 </div>
                 <div class="row">
@@ -120,7 +126,8 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-7"><textarea class="form-control" id="education" name="education"
-                                                    rows="5"></textarea></div>
+                                                    rows="5">{{resume.educationRaw}}</textarea>
+                    </div>
                     <div class="col-sm"></div>
                 </div>
 
@@ -135,7 +142,7 @@
                 <div class="row">
                     <div class="col-sm-7"><textarea class="form-control" id="licensesCertifications"
                                                     name="licensesCertifications"
-                                                    rows="5"></textarea></div>
+                                                    rows="5">{{resume.licensesCertificationsRaw}}</textarea></div>
                     <div class="col-sm"></div>
                 </div>
 
@@ -150,12 +157,12 @@
                 <div class="row">
                     <div class="col-sm-7"><textarea class="form-control" id="skillsEndorsements"
                                                     name="skillsEndorsements"
-                                                    rows="5"></textarea></div>
+                                                    rows="5">{{resume.skillsEndorsementsRaw}}</textarea></div>
                     <div class="col-sm"></div>
                 </div>
                 <div class="row">
-					<input type = "file" name = "uploadfile" />
-				</div>
+                    <input type="file" name="uploadfile"/>
+                </div>
 
                 <div class="row">
                     <div class="col-sm">&nbsp;</div>
