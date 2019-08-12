@@ -145,6 +145,7 @@ def extractAnExperienceData(anExperience):
     print(anExperience)
     exp = resumeDB_pb2.Experience()
     exp.title = locateData("(.*)\r\n" + SECTION_EXPERIENCE_COMPANY_NAME_TOKEN, anExperience)
+    exp.title = exp.title.strip("Title")
 
     # Title
     print(exp.title)
