@@ -43,6 +43,7 @@ def parseNumberOfMonth(yearMonthString):
 
     yearMonthString = yearMonthString.strip()
     yearMonthString = yearMonthString.replace(" mos", "")
+    yearMonthString = yearMonthString.replace(" mo", "")
     yearMonthString = yearMonthString.replace("yrs", "yr")
 
     year_month_array = yearMonthString.split(" yr")
@@ -105,7 +106,7 @@ def extractExperiences(experiencesText):
     # anExperience = extractAnExperienceData(records[0])
 
     # print(records)
-    print("exps length:", len(exps))
+    print("exps length:", len(exps), '\r\n\r\n')
     return exps
 
 
@@ -113,6 +114,7 @@ def extractExperiences(experiencesText):
 # check 'Degree name' count and \r\n\r\n split count first, TODO may need to do that as web validation.
 #
 def extractEducations(educationText):
+    # print('educationText\r\n', educationText)
     records = educationText.split('\r\n\r\n')
 
     edus = []
@@ -130,9 +132,8 @@ def extractEducations(educationText):
     # anExperience = extractAnExperienceData(records[0])
 
     # print(records)
-    # print("exps length:", len(edus))
+    print("edus length:", len(edus), '\r\n\r\n')
     return edus
-    return
 
 
 # Done regex. Done build domain class for structure data.
@@ -176,10 +177,12 @@ def extractAnExperienceData(anExperience):
 
 
 def extractAnEducationData(anEducationText):
-    if anEducationText.startswith(SECTION_EDUCATION_TOKEN):
-        anEducationText = anEducationText.replace(SECTION_EDUCATION_TOKEN, "")
+    # if anEducationText.startswith(SECTION_EDUCATION_TOKEN):
+    #     anEducationText = anEducationText.replace(SECTION_EDUCATION_TOKEN, "")
 
     # sections = anExperience.split("\r\n")
+
+    print(anEducationText)
 
     edu = resumeDB_pb2.Education()
     edu.schoolName = locateData("\r\n(.*)\r\n" + SECTION_EDUCATION_DEGREE_NAME_TOKEN, anEducationText)

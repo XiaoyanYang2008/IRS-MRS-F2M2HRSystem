@@ -103,7 +103,7 @@ def build_tfidf_vectorizer(resumes):
     #  May help to explain results matched with which keywords, as long as none zero.
     # Example, zaki matched java, but other people doesn't matched java. so, java keywords under zaki has a score
 
-    tfidf_vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 3))
+    tfidf_vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1, 2))
     tfidf_vectorizer.fit(resumes.tolist())
     resume_sm = tfidf_vectorizer.transform(resumes.tolist())
     return resume_sm, tfidf_vectorizer
