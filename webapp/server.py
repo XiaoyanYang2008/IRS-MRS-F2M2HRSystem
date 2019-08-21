@@ -7,6 +7,7 @@ import lk_parser
 import resumeDB_pb2
 import search
 import upload_resume
+import nltk
 
 SECTION_SEPERATOR = " \r\n"
 
@@ -192,4 +193,5 @@ def api_search():
 
 
 if __name__ == '__main__':
+    nltk.download('stopwords')
     app.run(host='0.0.0.0', port=5000, debug=True)
