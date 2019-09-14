@@ -31,8 +31,8 @@ public class Meeting extends AbstractPersistable {
      */
     private int durationInGrains;
 
-    private List<RequiredAttendance> requiredAttendanceList;
-    private List<PreferredAttendance> preferredAttendanceList;
+//    private List<RequiredAttendance> requiredAttendanceList;
+//    private List<PreferredAttendance> preferredAttendanceList;
 
     public String getTopic() {
         return topic;
@@ -74,29 +74,29 @@ public class Meeting extends AbstractPersistable {
         this.durationInGrains = durationInGrains;
     }
 
-    public List<RequiredAttendance> getRequiredAttendanceList() {
-        return requiredAttendanceList;
-    }
-
-    public void setRequiredAttendanceList(List<RequiredAttendance> requiredAttendanceList) {
-        this.requiredAttendanceList = requiredAttendanceList;
-    }
-
-    public List<PreferredAttendance> getPreferredAttendanceList() {
-        return preferredAttendanceList;
-    }
-
-    public void setPreferredAttendanceList(List<PreferredAttendance> preferredAttendanceList) {
-        this.preferredAttendanceList = preferredAttendanceList;
-    }
-
-    // ************************************************************************
-    // Complex methods
-    // ************************************************************************
-
-    public int getRequiredCapacity() {
-        return requiredAttendanceList.size() + preferredAttendanceList.size();
-    }
+//    public List<RequiredAttendance> getRequiredAttendanceList() {
+//        return requiredAttendanceList;
+//    }
+//
+//    public void setRequiredAttendanceList(List<RequiredAttendance> requiredAttendanceList) {
+//        this.requiredAttendanceList = requiredAttendanceList;
+//    }
+//
+//    public List<PreferredAttendance> getPreferredAttendanceList() {
+//        return preferredAttendanceList;
+//    }
+//
+//    public void setPreferredAttendanceList(List<PreferredAttendance> preferredAttendanceList) {
+//        this.preferredAttendanceList = preferredAttendanceList;
+//    }
+//
+//    // ************************************************************************
+//    // Complex methods
+//    // ************************************************************************
+//
+//    public int getRequiredCapacity() {
+//        return requiredAttendanceList.size() + preferredAttendanceList.size();
+//    }
 
     public String getDurationString() {
         return (durationInGrains * TimeGrain.GRAIN_LENGTH_IN_MINUTES) + " minutes";

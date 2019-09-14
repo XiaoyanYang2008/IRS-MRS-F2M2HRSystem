@@ -6,6 +6,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.neighbors import NearestNeighbors
 
+import app_constants
+import lk_parser
 import normalizeText
 
 
@@ -71,14 +73,14 @@ def ui_search(important_search):
     return flask_return
 
 
-def search_by_tfidf(important_search):
-    important_search = normalize(important_search)
+def search_by_tfidf(search_keywords):
+    search_keywords = normalize(search_keywords)
     resume_df = pd.read_csv("./db/resume_db.csv")
     resume_df.drop_duplicates(subset="profileURL",
                               keep='last', inplace=True)
     resumes = resume_df['rawResume']
     resume_sm, tfidf_vectorizer = build_tfidf_vectorizer(resumes)
-    search_sm = tfidf_vectorizer.transform([important_search])
+    search_sm = tfidf_vectorizer.transform([search_keywords])
     vals = cosine_similarity(search_sm, resume_sm)
     df = resume_df
     df['Score'] = vals[0]
@@ -93,13 +95,25 @@ def search_by_tfidf(important_search):
     # print(type(vals))
     # print(resumeDF.iloc[[idx]])
     df = df.sort_values(by=["Score"], ascending=False)
-    df1 = df[['name', 'profileURL', 'Score', 'NScore']]
+    db = lk_parser.loadData(app_constants.RESUMEDB_FILE_PB)
+    df['expectedMonthlySalary'] = df['profileURL'].apply(lambda x: getExpectMonthlySalary(db, x))
+
+    df1 = df[['name', 'profileURL', 'Score', 'NScore', 'expectedMonthlySalary']]
+    # df1 = df
     return df1
+
+
+def getExpectMonthlySalary(db, x):
+    resume = lk_parser.findResumeByURL(db, x)
+    if resume is not None:
+        return resume.monthlySalary
+    else:
+        return 0
 
 
 def build_tfidf_vectorizer(resumes):
     resumes = resumes.apply(normalize)
-    # TODO: search heywords can be comma seperated, input this method to see what result matched what keywords.
+    # TODO: search keywords can be comma seperated, input this method to see what result matched what keywords.
     #  May help to explain results matched with which keywords, as long as none zero.
     # Example, zaki matched java, but other people doesn't matched java. so, java keywords under zaki has a score
 

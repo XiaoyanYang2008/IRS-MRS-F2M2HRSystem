@@ -27,7 +27,7 @@ public class MeetingConstraintConfiguration extends AbstractPersistable {
     public static final String ROOM_CONFLICT = "Room conflict";
     public static final String DONT_GO_IN_OVERTIME = "Don't go in overtime";
     public static final String REQUIRED_ATTENDANCE_CONFLICT = "Required attendance conflict";
-    public static final String REQUIRED_ROOM_CAPACITY = "Required room capacity";
+//    public static final String REQUIRED_ROOM_CAPACITY = "Required room capacity";
     public static final String START_AND_END_ON_SAME_DAY = "Start and end on same day";
 
     public static final String REQUIRED_AND_PREFERRED_ATTENDANCE_CONFLICT = "Required and preferred attendance conflict";
@@ -45,8 +45,8 @@ public class MeetingConstraintConfiguration extends AbstractPersistable {
     private HardMediumSoftScore dontGoInOvertime = HardMediumSoftScore.ofHard(1);
     @ConstraintWeight(REQUIRED_ATTENDANCE_CONFLICT)
     private HardMediumSoftScore requiredAttendanceConflict = HardMediumSoftScore.ofHard(1);
-    @ConstraintWeight(REQUIRED_ROOM_CAPACITY)
-    private HardMediumSoftScore requiredRoomCapacity = HardMediumSoftScore.ofHard(1);
+//    @ConstraintWeight(REQUIRED_ROOM_CAPACITY)
+//    private HardMediumSoftScore requiredRoomCapacity = HardMediumSoftScore.ofHard(1);
     @ConstraintWeight(START_AND_END_ON_SAME_DAY)
     private HardMediumSoftScore startAndEndOnSameDay = HardMediumSoftScore.ofHard(1);
 
@@ -101,13 +101,13 @@ public class MeetingConstraintConfiguration extends AbstractPersistable {
         this.requiredAttendanceConflict = requiredAttendanceConflict;
     }
 
-    public HardMediumSoftScore getRequiredRoomCapacity() {
-        return requiredRoomCapacity;
-    }
-
-    public void setRequiredRoomCapacity(HardMediumSoftScore requiredRoomCapacity) {
-        this.requiredRoomCapacity = requiredRoomCapacity;
-    }
+//    public HardMediumSoftScore getRequiredRoomCapacity() {
+//        return requiredRoomCapacity;
+//    }
+//
+//    public void setRequiredRoomCapacity(HardMediumSoftScore requiredRoomCapacity) {
+//        this.requiredRoomCapacity = requiredRoomCapacity;
+//    }
 
     public HardMediumSoftScore getStartAndEndOnSameDay() {
         return startAndEndOnSameDay;

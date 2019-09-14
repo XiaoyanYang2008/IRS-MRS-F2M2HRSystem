@@ -238,3 +238,16 @@ def saveData(fileName, db):
 
 if __name__ == '__main__':
     main()
+
+
+def findResumeByURL(db, profileURL):
+    for resume in db.resumes:
+        if resume.profileURL == profileURL:
+            return resume
+
+    return None
+
+    # resume = resumeDB_pb2.Resume()
+    # db.resumes.append(resume)
+    #
+    # return resume

@@ -201,18 +201,18 @@ public class MeetingSchedulingPanel extends SolutionPanel<MeetingSchedule> {
             roomsPanel.addCell(startingTimeGrain, meetingAssignment.getRoom(),
                     lastTimeGrain, meetingAssignment.getRoom(),
                     createButton(meetingAssignment, color));
-            for (RequiredAttendance requiredAttendance : meetingAssignment.getMeeting().getRequiredAttendanceList()) {
-                Pair<Person, Boolean> pair = Pair.of(requiredAttendance.getPerson(), Boolean.TRUE);
-//                personsPanel.addCell(startingTimeGrain, pair,
-//                        lastTimeGrain, pair,
-//                        createButton(meetingAssignment, color));
-            }
-            for (PreferredAttendance preferredAttendance : meetingAssignment.getMeeting().getPreferredAttendanceList()) {
-                Pair<Person, Boolean> pair = Pair.of(preferredAttendance.getPerson(), Boolean.FALSE);
-//                personsPanel.addCell(startingTimeGrain, pair,
-//                        lastTimeGrain, pair,
-//                        createButton(meetingAssignment, color));
-            }
+//            for (RequiredAttendance requiredAttendance : meetingAssignment.getMeeting().getRequiredAttendanceList()) {
+//                Pair<Person, Boolean> pair = Pair.of(requiredAttendance.getPerson(), Boolean.TRUE);
+////                personsPanel.addCell(startingTimeGrain, pair,
+////                        lastTimeGrain, pair,
+////                        createButton(meetingAssignment, color));
+//            }
+//            for (PreferredAttendance preferredAttendance : meetingAssignment.getMeeting().getPreferredAttendanceList()) {
+//                Pair<Person, Boolean> pair = Pair.of(preferredAttendance.getPerson(), Boolean.FALSE);
+////                personsPanel.addCell(startingTimeGrain, pair,
+////                        lastTimeGrain, pair,
+////                        createButton(meetingAssignment, color));
+//            }
         }
     }
 

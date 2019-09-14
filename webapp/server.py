@@ -1,17 +1,18 @@
 import os
 
+import nltk
 from flask import (Flask, render_template, request, send_from_directory, jsonify)
 from werkzeug import secure_filename
 
+import app_constants
 import lk_parser
 import resumeDB_pb2
 import search
 import upload_resume
-import nltk
+from lk_parser import findResumeByURL
 
 SECTION_SEPERATOR = " \r\n"
 
-RESUMEDB_FILE_PB = "resumeDB.pb"
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './Resumes/'
@@ -41,7 +42,7 @@ def uploadResumePage():
 @app.route('/editResume')
 def editResume():
     profileURL = request.args.get('profileURL')
-    db = lk_parser.loadData(RESUMEDB_FILE_PB)
+    db = lk_parser.loadData(app_constants.RESUMEDB_FILE_PB)
     resume = findResumeByURL(db, profileURL)
 
     return render_template('createResumePage.html', resume=resume)
@@ -83,7 +84,7 @@ def createResumeAction():
     result = upload_resume.insertResume(nameRaw, URL, rawResume)
 
     # For protobuf DB.
-    db = lk_parser.loadData(RESUMEDB_FILE_PB)
+    db = lk_parser.loadData(app_constants.RESUMEDB_FILE_PB)
     resume = findResumeByURL(db, profileURL)
     if resume is None:
         resume = resumeDB_pb2.Resume()
@@ -109,22 +110,9 @@ def createResumeAction():
     if resumeExists is None:
         db.resumes.append(resume)
 
-    lk_parser.saveData(RESUMEDB_FILE_PB, db)
+    lk_parser.saveData(app_constants.RESUMEDB_FILE_PB, db)
 
     return render_template('createResumePageResult.html', results=result)
-
-
-def findResumeByURL(db, profileURL):
-    for resume in db.resumes:
-        if resume.profileURL == profileURL:
-            return resume
-
-    return None
-
-    # resume = resumeDB_pb2.Resume()
-    # db.resumes.append(resume)
-    #
-    # return resume
 
 
 @app.route('/uploadResumeAction', methods=['POST'])
@@ -188,6 +176,7 @@ def custom_static(filename):
 def api_search():
     search_keywords = request.form['search']
     result_df = search.search_by_tfidf(search_keywords)
+    result_df = result_df[result_df['profileURL'].str.contains('https://')]
 
     return jsonify(result_df.to_csv())
 

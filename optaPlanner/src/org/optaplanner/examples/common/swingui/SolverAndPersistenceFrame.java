@@ -24,10 +24,12 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -65,6 +67,11 @@ import org.optaplanner.examples.common.persistence.AbstractSolutionImporter;
 import org.optaplanner.swing.impl.TangoColorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import hr.domain.ResumeDBOuterClass.Resume;
+import sg.edu.nus.iss.is2019.rs.hr.app.JsonClient;
+import sg.edu.nus.iss.is2019.rs.hr.app.JsonClient.SearchResult;
+import sg.edu.nus.iss.is2019.rs.hr.persistence.MeetingSchedulingGenerator;
 
 /**
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
@@ -308,6 +315,30 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
         solveButton.setPreferredSize(terminateSolvingEarlyButton.getPreferredSize());
 
         GroupLayout.SequentialGroup horizontalGroup = toolBarLayout.createSequentialGroup();
+        JLabel searchLabel = new JLabel("Search:");
+        JTextField searchField  = new JTextField("how about..? ");
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO: create domain objects for planning here
+				String searchText = searchField.getText();
+				System.out.println("solutionBusiness:"+solutionBusiness);
+				System.out.println("search:"+ searchText);
+				JsonClient jc = new JsonClient();
+				Map<String, SearchResult> results = jc.search("http://localhost:5000/api_search",searchText);
+				
+				MeetingSchedulingGenerator gen = new MeetingSchedulingGenerator();
+				gen.writeCustomMeetingSchedule(results, 10, 5);
+			}
+		});
+        
+        
+        horizontalGroup.addComponent(searchLabel);
+        horizontalGroup.addComponent(searchField);
+        horizontalGroup.addComponent(searchButton);
+        
         if (solutionBusiness.hasImporter()) {
             horizontalGroup.addComponent(importButton);
         }
@@ -325,6 +356,11 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
         horizontalGroup.addComponent(progressBar, 20, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE);
         toolBarLayout.setHorizontalGroup(horizontalGroup);
         GroupLayout.ParallelGroup verticalGroup = toolBarLayout.createParallelGroup(GroupLayout.Alignment.CENTER);
+        
+        verticalGroup.addComponent(searchLabel);
+        verticalGroup.addComponent(searchField);
+        verticalGroup.addComponent(searchButton);
+        
         if (solutionBusiness.hasImporter()) {
             verticalGroup.addComponent(importButton);
         }

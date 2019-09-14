@@ -63,12 +63,12 @@ rule "Required attendance conflict"
         scoreHolder.penalize(kcontext, $rightAssignment.calculateOverlap($leftAssignment));
 end
 
-rule "Required room capacity"
-    when
-        MeetingAssignment(requiredCapacity > roomCapacity, $requiredCapacity : requiredCapacity, $roomCapacity : roomCapacity)
-    then
-        scoreHolder.penalize(kcontext, $requiredCapacity - $roomCapacity);
-end
+//rule "Required room capacity"
+//    when
+//        MeetingAssignment(requiredCapacity > roomCapacity, $requiredCapacity : requiredCapacity, $roomCapacity : roomCapacity)
+//    then
+//        scoreHolder.penalize(kcontext, $requiredCapacity - $roomCapacity);
+//end
 
 rule "Start and end on same day"
     when

@@ -43,9 +43,9 @@ public class MeetingSchedule extends AbstractPersistable {
     @ValueRangeProvider(id = "roomRange")
     @ProblemFactCollectionProperty
     private List<Room> roomList;
-    @ProblemFactCollectionProperty
+//    @ProblemFactCollectionProperty
     private List<Person> personList;
-    @ProblemFactCollectionProperty
+//    @ProblemFactCollectionProperty
     private List<Attendance> attendanceList;
 
     @PlanningEntityCollectionProperty

@@ -19,7 +19,9 @@ package sg.edu.nus.iss.is2019.rs.hr.persistence;
 import java.io.File;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.optaplanner.examples.common.app.CommonApp;
@@ -29,6 +31,7 @@ import org.optaplanner.examples.common.persistence.generator.StringDataGenerator
 import org.optaplanner.persistence.common.api.domain.solution.SolutionFileIO;
 
 import sg.edu.nus.iss.is2019.rs.hr.app.HumanResourcesPlanningApp;
+import sg.edu.nus.iss.is2019.rs.hr.app.JsonClient.SearchResult;
 import sg.edu.nus.iss.is2019.rs.hr.domain.Attendance;
 import sg.edu.nus.iss.is2019.rs.hr.domain.Day;
 import sg.edu.nus.iss.is2019.rs.hr.domain.Meeting;
@@ -174,6 +177,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
         outputDir = new File(CommonApp.determineDataDir(HumanResourcesPlanningApp.DATA_DIR_NAME), "unsolved");
     }
 
+    //TODO: after calling API, how to change here to make dataset for planning?
     private void writeMeetingSchedule(int meetingListSize, int roomListSize) {
         int timeGrainListSize = meetingListSize * durationInGrainsOptions[durationInGrainsOptions.length - 1] / roomListSize;
         String fileName = determineFileName(meetingListSize, timeGrainListSize, roomListSize);
@@ -182,9 +186,54 @@ public class MeetingSchedulingGenerator extends LoggingMain {
         solutionFileIO.write(meetingSchedule, outputFile);
         logger.info("Saved: {}", outputFile);
     }
+    
+    public void writeCustomMeetingSchedule(Map<String, SearchResult> results, int meetingListSize, int roomListSize) {
+    	
+//        int timeGrainListSize = meetingListSize * durationInGrainsOptions[durationInGrainsOptions.length - 1] / roomListSize;
+    	int timeGrainListSize = 1;
+    	
+        String fileName = determineFileName(results.size(), timeGrainListSize, roomListSize);
+        File outputFile = new File(outputDir, "HR-"+fileName + "." + solutionFileIO.getOutputFileExtension());
+        
+        MeetingSchedule meetingSchedule = createCustomMeetingSchedule(results, fileName, meetingListSize, timeGrainListSize, roomListSize);
+        solutionFileIO.write(meetingSchedule, outputFile);
+        logger.info("Saved: {}", outputFile);
+    }
 
     private String determineFileName(int meetingListSize, int timeGrainListSize, int roomListSize) {
-        return meetingListSize + "meetings-" + timeGrainListSize + "timegrains-" + roomListSize + "rooms";
+        return meetingListSize + "meetings-" + timeGrainListSize + "timegrains-" + roomListSize + "group";
+    }
+    
+    
+    public MeetingSchedule createCustomMeetingSchedule(Map<String, SearchResult> results, String fileName, int meetingListSize, int timeGrainListSize, int roomListSize) {
+        random = new Random(37);
+        timeGrainListSize = 1;
+        roomListSize = 5;
+        		
+        MeetingSchedule meetingSchedule = new MeetingSchedule();
+        meetingSchedule.setId(0L);
+        MeetingConstraintConfiguration constraintConfiguration = new MeetingConstraintConfiguration();
+        constraintConfiguration.setId(0L);
+        meetingSchedule.setConstraintConfiguration(constraintConfiguration);
+
+        createCustomMeetingListAndAttendanceList(meetingSchedule, results); //TODO: LeeSeng understand this and fill up accordingly.
+        createTimeGrainList(meetingSchedule, timeGrainListSize);
+        createRoomList(meetingSchedule, roomListSize);
+        List<Person> plist = new ArrayList();
+        meetingSchedule.setPersonList(plist);
+//        createPersonList(meetingSchedule);
+//        linkAttendanceListToPersons(meetingSchedule);
+        createMeetingAssignmentList(meetingSchedule);
+
+        BigInteger possibleSolutionSize = BigInteger.valueOf((long) timeGrainListSize * roomListSize)
+                .pow(meetingSchedule.getMeetingAssignmentList().size());
+        logger.info("MeetingSchedule {} has {} meetings, {} timeGrains and {} rooms with a search space of {}.",
+                fileName,
+                meetingListSize,
+                timeGrainListSize,
+                roomListSize,
+                AbstractSolutionImporter.getFlooredPossibleSolutionSize(possibleSolutionSize));
+        return meetingSchedule;
     }
 
     public MeetingSchedule createMeetingSchedule(String fileName, int meetingListSize, int timeGrainListSize, int roomListSize) {
@@ -212,6 +261,64 @@ public class MeetingSchedulingGenerator extends LoggingMain {
                 AbstractSolutionImporter.getFlooredPossibleSolutionSize(possibleSolutionSize));
         return meetingSchedule;
     }
+    
+    private void createCustomMeetingListAndAttendanceList(MeetingSchedule meetingSchedule, Map<String, SearchResult> results) {
+        List<Meeting> meetingList = new ArrayList<>(results.size());
+        List<Attendance> globalAttendanceList = new ArrayList<>();
+        long attendanceId = 0L;
+//        topicGenerator.predictMaximumSizeAndReset(meetingListSize);
+        
+//        for (int i = 0; i < results.size(); i++) {
+        int i=0;
+        for (Iterator iterator = results.keySet().iterator(); iterator.hasNext();i++) {
+			String profileUrl = (String) iterator.next();
+			SearchResult sr = results.get(profileUrl);
+			
+            Meeting meeting = new Meeting();
+            meeting.setId((long) i);
+//            String topic = topicGenerator.generateNextValue();
+            meeting.setTopic(sr.getName()+" "+sr.getExpectedMonthlySalary());
+            
+            int durationInGrains = 1; 
+//            durationInGrainsOptions[random.nextInt(durationInGrainsOptions.length)];
+            meeting.setDurationInGrains(durationInGrains);
+
+//            int attendanceListSize = personsPerMeetingOptions[random.nextInt(personsPerMeetingOptions.length)];
+//            int requiredAttendanceListSize = Math.max(2, random.nextInt(attendanceListSize + 1));
+//            List<RequiredAttendance> requiredAttendanceList = new ArrayList<>(requiredAttendanceListSize);
+//            for (int j = 0; j < requiredAttendanceListSize; j++) {
+//                RequiredAttendance attendance = new RequiredAttendance();
+//                attendance.setId(attendanceId);
+//                attendanceId++;
+//                attendance.setMeeting(meeting);
+//                // person is filled in later
+//                requiredAttendanceList.add(attendance);
+//                globalAttendanceList.add(attendance);
+//            }
+//            meeting.setRequiredAttendanceList(requiredAttendanceList);
+//            int preferredAttendanceListSize = attendanceListSize - requiredAttendanceListSize;
+//            List<PreferredAttendance> preferredAttendanceList = new ArrayList<>(preferredAttendanceListSize);
+//            for (int j = 0; j < preferredAttendanceListSize; j++) {
+//                PreferredAttendance attendance = new PreferredAttendance();
+//                attendance.setId(attendanceId);
+//                attendanceId++;
+//                attendance.setMeeting(meeting);
+//                // person is filled in later
+//                preferredAttendanceList.add(attendance);
+//                globalAttendanceList.add(attendance);
+//            }
+//            meeting.setPreferredAttendanceList(preferredAttendanceList);
+//
+//            logger.trace("Created meeting with topic ({}), durationInGrains ({}),"
+//                    + " requiredAttendanceListSize ({}), preferredAttendanceListSize ({}).",
+//                    topic, durationInGrains,
+//                    requiredAttendanceListSize, preferredAttendanceListSize);
+            meetingList.add(meeting);
+//        }
+        }
+        meetingSchedule.setMeetingList(meetingList);
+        meetingSchedule.setAttendanceList(globalAttendanceList);
+    }
 
     private void createMeetingListAndAttendanceList(MeetingSchedule meetingSchedule, int meetingListSize) {
         List<Meeting> meetingList = new ArrayList<>(meetingListSize);
@@ -238,7 +345,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
                 requiredAttendanceList.add(attendance);
                 globalAttendanceList.add(attendance);
             }
-            meeting.setRequiredAttendanceList(requiredAttendanceList);
+//            meeting.setRequiredAttendanceList(requiredAttendanceList);
             int preferredAttendanceListSize = attendanceListSize - requiredAttendanceListSize;
             List<PreferredAttendance> preferredAttendanceList = new ArrayList<>(preferredAttendanceListSize);
             for (int j = 0; j < preferredAttendanceListSize; j++) {
@@ -250,7 +357,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
                 preferredAttendanceList.add(attendance);
                 globalAttendanceList.add(attendance);
             }
-            meeting.setPreferredAttendanceList(preferredAttendanceList);
+//            meeting.setPreferredAttendanceList(preferredAttendanceList);
 
             logger.trace("Created meeting with topic ({}), durationInGrains ({}),"
                     + " requiredAttendanceListSize ({}), preferredAttendanceListSize ({}).",
@@ -311,10 +418,10 @@ public class MeetingSchedulingGenerator extends LoggingMain {
 
     private void createPersonList(MeetingSchedule meetingSchedule) {
         int attendanceListSize = 0;
-        for (Meeting meeting : meetingSchedule.getMeetingList()) {
-            attendanceListSize += meeting.getRequiredAttendanceList().size()
-                    + meeting.getPreferredAttendanceList().size();
-        }
+//        for (Meeting meeting : meetingSchedule.getMeetingList()) {
+//            attendanceListSize += meeting.getRequiredAttendanceList().size()
+//                    + meeting.getPreferredAttendanceList().size();
+//        }
         int personListSize = attendanceListSize * meetingSchedule.getRoomList().size() * 3
                 / (4 * meetingSchedule.getMeetingList().size());
         List<Person> personList = new ArrayList<>(personListSize);
@@ -334,17 +441,17 @@ public class MeetingSchedulingGenerator extends LoggingMain {
     private void linkAttendanceListToPersons(MeetingSchedule meetingSchedule) {
         for (Meeting meeting : meetingSchedule.getMeetingList()) {
             List<Person> availablePersonList = new ArrayList<>(meetingSchedule.getPersonList());
-            int attendanceListSize = meeting.getRequiredAttendanceList().size() + meeting.getPreferredAttendanceList().size();
-            if (availablePersonList.size() < attendanceListSize) {
-                throw new IllegalStateException("The availablePersonList size (" + availablePersonList.size()
-                        + ") is less than the attendanceListSize (" + attendanceListSize + ").");
-            }
-            for (RequiredAttendance requiredAttendance : meeting.getRequiredAttendanceList()) {
-                requiredAttendance.setPerson(availablePersonList.remove(random.nextInt(availablePersonList.size())));
-            }
-            for (PreferredAttendance preferredAttendance : meeting.getPreferredAttendanceList()) {
-                preferredAttendance.setPerson(availablePersonList.remove(random.nextInt(availablePersonList.size())));
-            }
+//            int attendanceListSize = meeting.getRequiredAttendanceList().size() + meeting.getPreferredAttendanceList().size();
+//            if (availablePersonList.size() < attendanceListSize) {
+//                throw new IllegalStateException("The availablePersonList size (" + availablePersonList.size()
+//                        + ") is less than the attendanceListSize (" + attendanceListSize + ").");
+//            }
+//            for (RequiredAttendance requiredAttendance : meeting.getRequiredAttendanceList()) {
+//                requiredAttendance.setPerson(availablePersonList.remove(random.nextInt(availablePersonList.size())));
+//            }
+//            for (PreferredAttendance preferredAttendance : meeting.getPreferredAttendanceList()) {
+//                preferredAttendance.setPerson(availablePersonList.remove(random.nextInt(availablePersonList.size())));
+//            }
         }
     }
 

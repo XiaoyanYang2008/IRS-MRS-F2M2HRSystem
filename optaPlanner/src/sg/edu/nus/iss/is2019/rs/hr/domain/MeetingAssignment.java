@@ -98,9 +98,9 @@ public class MeetingAssignment extends AbstractPersistable {
         return room.getCapacity();
     }
 
-    public int getRequiredCapacity() {
-        return meeting.getRequiredCapacity();
-    }
+//    public int getRequiredCapacity() {
+//        return meeting.getRequiredCapacity();
+//    }
 
     public String getLabel() {
         int wrapLength = Math.max(8 * meeting.getDurationInGrains(), 16);
