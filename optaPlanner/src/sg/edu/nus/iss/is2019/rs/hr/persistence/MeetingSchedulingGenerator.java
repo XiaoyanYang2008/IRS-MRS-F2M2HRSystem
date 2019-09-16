@@ -48,11 +48,11 @@ public class MeetingSchedulingGenerator extends LoggingMain {
 
     public static void main(String[] args) {
         MeetingSchedulingGenerator generator = new MeetingSchedulingGenerator();
-        generator.writeMeetingSchedule(50, 5);
-        generator.writeMeetingSchedule(100, 5);
-        generator.writeMeetingSchedule(200, 5);
-        generator.writeMeetingSchedule(400, 5);
-        generator.writeMeetingSchedule(800, 5);
+//        generator.writeMeetingSchedule(50, 5);
+//        generator.writeMeetingSchedule(100, 5);
+//        generator.writeMeetingSchedule(200, 5);
+//        generator.writeMeetingSchedule(400, 5);
+//        generator.writeMeetingSchedule(800, 5);
     }
 
     private final StringDataGenerator topicGenerator = new StringDataGenerator()

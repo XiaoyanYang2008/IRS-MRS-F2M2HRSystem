@@ -63,7 +63,7 @@ public class MeetingSchedulingPanel extends SolutionPanel<MeetingSchedule> {
         setLayout(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane();
         roomsPanel = new TimeTablePanel<>();
-        tabbedPane.add("Rooms", new JScrollPane(roomsPanel));
+        tabbedPane.add("Combinations", new JScrollPane(roomsPanel));
 //        personsPanel = new TimeTablePanel<>();
 //        tabbedPane.add("Persons", new JScrollPane(personsPanel));
         add(tabbedPane, BorderLayout.CENTER);
@@ -92,7 +92,7 @@ public class MeetingSchedulingPanel extends SolutionPanel<MeetingSchedule> {
             roomsPanel.defineColumnHeader(timeGrain);
 //            personsPanel.defineColumnHeader(timeGrain);
         }
-        roomsPanel.defineColumnHeader(OVERTIME_TIME_GRAIN); // Overtime timeGrain
+//        roomsPanel.defineColumnHeader(OVERTIME_TIME_GRAIN); // Overtime timeGrain
 //        personsPanel.defineColumnHeader(OVERTIME_TIME_GRAIN); // Overtime timeGrain
         roomsPanel.defineColumnHeader(null); // Unassigned timeGrain
 //        personsPanel.defineColumnHeader(null); // Unassigned timeGrain
@@ -113,7 +113,7 @@ public class MeetingSchedulingPanel extends SolutionPanel<MeetingSchedule> {
     }
 
     private void fillCells(MeetingSchedule meetingSchedule) {
-        roomsPanel.addCornerHeader(HEADER_COLUMN, HEADER_ROW, createTableHeader(new JLabel("Room")));
+        roomsPanel.addCornerHeader(HEADER_COLUMN, HEADER_ROW, createTableHeader(new JLabel("Groups")));
         fillRoomCells(meetingSchedule);
 //        personsPanel.addCornerHeader(HEADER_COLUMN_GROUP1, HEADER_ROW, createTableHeader(new JLabel("Person")));
 //        personsPanel.addCornerHeader(HEADER_COLUMN, HEADER_ROW, createTableHeader(new JLabel("Attendance")));
@@ -161,8 +161,8 @@ public class MeetingSchedulingPanel extends SolutionPanel<MeetingSchedule> {
 //            personsPanel.addColumnHeader(timeGrain, HEADER_ROW,
 //                    createTableHeader(new JLabel(timeGrain.getLabel())));
         }
-        roomsPanel.addColumnHeader(OVERTIME_TIME_GRAIN, HEADER_ROW,
-                createTableHeader(new JLabel("Overtime")));
+//        roomsPanel.addColumnHeader(OVERTIME_TIME_GRAIN, HEADER_ROW,
+//                createTableHeader(new JLabel("Overtime")));
 //        personsPanel.addColumnHeader(OVERTIME_TIME_GRAIN, HEADER_ROW,
 //                createTableHeader(new JLabel("Overtime")));
         roomsPanel.addColumnHeader(null, HEADER_ROW,

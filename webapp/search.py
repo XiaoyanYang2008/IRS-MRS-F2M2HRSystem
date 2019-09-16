@@ -84,6 +84,7 @@ def search_by_tfidf(search_keywords):
     vals = cosine_similarity(search_sm, resume_sm)
     df = resume_df
     df['Score'] = vals[0]
+    df = df[df['Score'] != 0]
 
     if max(df['Score'] != 0):
         df['NScore'] = df['Score'] / max(df['Score'])
