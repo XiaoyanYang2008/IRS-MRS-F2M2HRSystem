@@ -187,13 +187,16 @@ public class MeetingSchedulingGenerator extends LoggingMain {
         logger.info("Saved: {}", outputFile);
     }
     
-    public void writeCustomMeetingSchedule(Map<String, SearchResult> results, int meetingListSize, int roomListSize) {
+    public void writeCustomMeetingSchedule(String searchText, Map<String, SearchResult> results, int meetingListSize, int roomListSize) {
     	
 //        int timeGrainListSize = meetingListSize * durationInGrainsOptions[durationInGrainsOptions.length - 1] / roomListSize;
+    	searchText = searchText.replaceAll(" ", "-");
+    	searchText = searchText.replaceAll(",", "-");
+    	
     	int timeGrainListSize = 1;
     	
         String fileName = determineFileName(results.size(), timeGrainListSize, roomListSize);
-        File outputFile = new File(outputDir, "HR-"+fileName + "." + solutionFileIO.getOutputFileExtension());
+        File outputFile = new File(outputDir, "HR-"+searchText+"-"+fileName + "." + solutionFileIO.getOutputFileExtension());
         
         MeetingSchedule meetingSchedule = createCustomMeetingSchedule(results, fileName, meetingListSize, timeGrainListSize, roomListSize);
         solutionFileIO.write(meetingSchedule, outputFile);
@@ -272,12 +275,16 @@ public class MeetingSchedulingGenerator extends LoggingMain {
         int i=0;
         for (Iterator iterator = results.keySet().iterator(); iterator.hasNext();i++) {
 			String profileUrl = (String) iterator.next();
+			if("profileURL".equalsIgnoreCase(profileUrl))
+				continue;
+			
 			SearchResult sr = results.get(profileUrl);
 			
             Meeting meeting = new Meeting();
+            meeting.setSr(sr);
             meeting.setId((long) i);
 //            String topic = topicGenerator.generateNextValue();
-            meeting.setTopic(sr.getName()+" "+sr.getExpectedMonthlySalary());
+            meeting.setTopic(sr.getName()+String.format(" %.2f",Float.parseFloat(sr.getNScore()))+" Salary:"+sr.getExpectedMonthlySalary());
             
             int durationInGrains = 1; 
 //            durationInGrainsOptions[random.nextInt(durationInGrainsOptions.length)];

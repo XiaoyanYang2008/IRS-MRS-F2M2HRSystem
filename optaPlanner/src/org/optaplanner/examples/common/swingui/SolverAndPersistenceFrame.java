@@ -330,7 +330,9 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
 				Map<String, SearchResult> results = jc.search("http://localhost:5000/api_search",searchText);
 				
 				MeetingSchedulingGenerator gen = new MeetingSchedulingGenerator();
-				gen.writeCustomMeetingSchedule(results, 10, 5);
+				gen.writeCustomMeetingSchedule(searchText, results, 10, 5);
+				refreshQuickOpenPanel(quickOpenUnsolvedJList, solutionBusiness.getUnsolvedFileList());
+				
 			}
 		});
         

@@ -20,9 +20,12 @@ import java.util.List;
 
 import org.optaplanner.examples.common.domain.AbstractPersistable;
 
+import sg.edu.nus.iss.is2019.rs.hr.app.JsonClient.SearchResult;
+
 public class Meeting extends AbstractPersistable {
 
-    private String topic;
+	private SearchResult sr;
+	private String topic;
     private List<Person> speakerList;
     private String content;
     private boolean entireGroupMeeting;
@@ -34,6 +37,25 @@ public class Meeting extends AbstractPersistable {
 //    private List<RequiredAttendance> requiredAttendanceList;
 //    private List<PreferredAttendance> preferredAttendanceList;
 
+    public SearchResult getSr() {
+		return sr;
+	}
+
+	public void setSr(SearchResult sr) {
+		this.sr = sr;
+	}
+	
+	
+	public float getNScore()
+	{
+		return Float.parseFloat(sr.getNScore());
+	}
+	
+	public float getSalary()
+	{
+		return Float.parseFloat(sr.getExpectedMonthlySalary());
+	}
+	
     public String getTopic() {
         return topic;
     }
