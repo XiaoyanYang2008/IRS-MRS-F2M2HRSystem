@@ -78,6 +78,19 @@ rule "Start and end on same day"
         scoreHolder.penalize(kcontext);
 end
 
+
+rule "Team within budget"
+    when
+       $leftAssignment : MeetingAssignment(room != null, $room : room, $leftId : id)
+        accumulate(
+            $assignment : MeetingAssignment(room == $room, $leftId != id && calculateOverlap($leftAssignment) > 0);
+            $total : sum($assignment.getMeeting().getSalary())
+        )
+    then
+//        System.out.println(assignment);
+        scoreHolder.addHardConstraintMatch(kcontext, $total > $room.getSalaryBudget() ?(int)($room.getSalaryBudget()-$total):0);  //1+2, self+ other //addHardConstraintMatch
+end
+
 // ############################################################################
 // Medium constraints usually
 // ############################################################################
@@ -152,3 +165,4 @@ rule "Room stability"
     then
         scoreHolder.penalize(kcontext);
 end
+

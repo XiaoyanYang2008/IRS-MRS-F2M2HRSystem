@@ -187,7 +187,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
         logger.info("Saved: {}", outputFile);
     }
     
-    public void writeCustomMeetingSchedule(String searchText, Map<String, SearchResult> results, int meetingListSize, int roomListSize) {
+    public void writeCustomMeetingSchedule(String searchText, float budget, Map<String, SearchResult> results, int meetingListSize, int roomListSize) {
     	
 //        int timeGrainListSize = meetingListSize * durationInGrainsOptions[durationInGrainsOptions.length - 1] / roomListSize;
     	searchText = searchText.replaceAll(" ", "-");
@@ -198,7 +198,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
         String fileName = determineFileName(results.size(), timeGrainListSize, roomListSize);
         File outputFile = new File(outputDir, "HR-"+searchText+"-"+fileName + "." + solutionFileIO.getOutputFileExtension());
         
-        MeetingSchedule meetingSchedule = createCustomMeetingSchedule(results, fileName, meetingListSize, timeGrainListSize, roomListSize);
+        MeetingSchedule meetingSchedule = createCustomMeetingSchedule(budget, results, fileName, meetingListSize, timeGrainListSize, roomListSize);
         solutionFileIO.write(meetingSchedule, outputFile);
         logger.info("Saved: {}", outputFile);
     }
@@ -208,7 +208,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
     }
     
     
-    public MeetingSchedule createCustomMeetingSchedule(Map<String, SearchResult> results, String fileName, int meetingListSize, int timeGrainListSize, int roomListSize) {
+    public MeetingSchedule createCustomMeetingSchedule(float budget, Map<String, SearchResult> results, String fileName, int meetingListSize, int timeGrainListSize, int roomListSize) {
         random = new Random(37);
         timeGrainListSize = 1;
         roomListSize = 5;
@@ -221,7 +221,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
 
         createCustomMeetingListAndAttendanceList(meetingSchedule, results); //TODO: LeeSeng understand this and fill up accordingly.
         createTimeGrainList(meetingSchedule, timeGrainListSize);
-        createRoomList(meetingSchedule, roomListSize);
+        createCustomRoomList(budget, meetingSchedule, roomListSize);
         List<Person> plist = new ArrayList();
         meetingSchedule.setPersonList(plist);
 //        createPersonList(meetingSchedule);
@@ -281,7 +281,8 @@ public class MeetingSchedulingGenerator extends LoggingMain {
 			SearchResult sr = results.get(profileUrl);
 			
             Meeting meeting = new Meeting();
-            meeting.setSr(sr);
+            meeting.setSalary(Double.parseDouble(sr.getExpectedMonthlySalary()));
+            meeting.setNscore(Double.parseDouble(sr.getNScore()));
             meeting.setId((long) i);
 //            String topic = topicGenerator.generateNextValue();
             meeting.setTopic(sr.getName()+String.format(" %.2f",Float.parseFloat(sr.getNScore()))+" Salary:"+sr.getExpectedMonthlySalary());
@@ -403,6 +404,25 @@ public class MeetingSchedulingGenerator extends LoggingMain {
         }
         meetingSchedule.setDayList(dayList);
         meetingSchedule.setTimeGrainList(timeGrainList);
+    }
+    
+    private void createCustomRoomList(float budget, MeetingSchedule meetingSchedule, int roomListSize) {
+        final int roomsPerFloor = 20;
+        List<Room> roomList = new ArrayList<>(roomListSize);
+        for (int i = 0; i < roomListSize; i++) {
+            Room room = new Room();
+            room.setSalaryBudget(new Double(budget));
+            room.setId((long) i);
+            String name = "R " + ((i / roomsPerFloor * 100) + (i % roomsPerFloor) + 1);
+            room.setName(name);
+            int capacityOptionsSubsetSize = personsPerMeetingOptions.length * 3 / 4;
+            int capacity = personsPerMeetingOptions[personsPerMeetingOptions.length - (i % capacityOptionsSubsetSize) - 1];
+            room.setCapacity(capacity);
+            logger.trace("Created room with name ({}), capacity ({}).",
+                    name, capacity);
+            roomList.add(room);
+        }
+        meetingSchedule.setRoomList(roomList);
     }
 
     private void createRoomList(MeetingSchedule meetingSchedule, int roomListSize) {

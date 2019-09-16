@@ -23,6 +23,7 @@ public class Room extends AbstractPersistable implements Labeled {
 
     private String name;
     private int capacity;
+    public Double salaryBudget=0.0;
 
     public String getName() {
         return name;
@@ -40,7 +41,15 @@ public class Room extends AbstractPersistable implements Labeled {
         this.capacity = capacity;
     }
 
-    @Override
+    public Double getSalaryBudget() {
+		return salaryBudget;
+	}
+
+	public void setSalaryBudget(Double salaryBudget) {
+		this.salaryBudget = salaryBudget;
+	}
+
+	@Override
     public String getLabel() {
         return name;
     }

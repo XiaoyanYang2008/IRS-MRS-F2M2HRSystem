@@ -138,6 +138,8 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
             nextSheet("Meetings");
             nextRow(false);
             readHeaderCell("Topic");
+            readHeaderCell("Salary");
+            readHeaderCell("NScore");
             readHeaderCell("Group");
             readHeaderCell("Duration");
             readHeaderCell("Speakers");
@@ -166,6 +168,9 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
                 meetingAssignment.setId(meetingAssignmentId++);
 
                 meeting.setTopic(nextStringCell().getStringCellValue());
+                meeting.setSalary(Double.parseDouble(nextStringCell().getStringCellValue()));
+                meeting.setNscore(Double.parseDouble(nextStringCell().getStringCellValue()));
+                
                 meeting.setEntireGroupMeeting(nextStringCell().getStringCellValue().toLowerCase().equals("y"));
                 readMeetingDuration(meeting);
 //                readSpeakerList(personMap, meeting, speakerAttendanceList, speakerSet);
@@ -411,6 +416,8 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
             nextRow();
             readHeaderCell("Name");
             readHeaderCell("Capacity");
+            readHeaderCell("salaryBudget");
+            
             List<Room> roomList = new ArrayList<>(currentSheet.getLastRowNum() - 1);
             long id = 0L;
             while (nextRow()) {
@@ -429,6 +436,7 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
                                     + ") has a capacity (" + capacityDouble + ") that isn't a strictly positive integer number.");
                 }
                 room.setCapacity((int) capacityDouble);
+                room.setSalaryBudget(Double.parseDouble(nextStringCell().getStringCellValue()));
                 roomList.add(room);
             }
             solution.setRoomList(roomList);
@@ -517,6 +525,8 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
             nextSheet("Meetings", 1, 1, false);
             nextRow();
             nextHeaderCell("Topic");
+            nextHeaderCell("Salary");
+            nextHeaderCell("NScore");
             nextHeaderCell("Group");
             nextHeaderCell("Duration");
             nextHeaderCell("Speakers");
@@ -531,6 +541,8 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
             for (Meeting meeting : solution.getMeetingList()) {
                 nextRow();
                 nextCell().setCellValue(meeting.getTopic());
+                nextCell().setCellValue(meeting.getSalary()+"");
+                nextCell().setCellValue(meeting.getNscore()+"");
                 nextCell().setCellValue(meeting.isEntireGroupMeeting() ? "Y" : "");
                 nextCell().setCellValue(meeting.getDurationInGrains() * TimeGrain.GRAIN_LENGTH_IN_MINUTES);
                 nextCell().setCellValue(meeting.getSpeakerList() == null ? "" :
@@ -597,10 +609,13 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
             nextRow();
             nextHeaderCell("Name");
             nextHeaderCell("Capacity");
+            nextHeaderCell("salaryBudget");
+            
             for (Room room : solution.getRoomList()) {
                 nextRow();
                 nextCell().setCellValue(room.getName());
                 nextCell().setCellValue(room.getCapacity());
+                nextCell().setCellValue(room.getSalaryBudget()+"");
             }
             autoSizeColumnsWithHeader();
         }

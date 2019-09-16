@@ -108,6 +108,7 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
     private JPanel middlePanel;
     private JProgressBar progressBar;
     private JTextField scoreField;
+    private JTextField budgetField;
     private ShowConstraintMatchesDialogAction showConstraintMatchesDialogAction;
 
 
@@ -315,6 +316,9 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
         solveButton.setPreferredSize(terminateSolvingEarlyButton.getPreferredSize());
 
         GroupLayout.SequentialGroup horizontalGroup = toolBarLayout.createSequentialGroup();
+        JLabel budgetLabel = new JLabel("Budget:");
+        JTextField budgetField  = new JTextField("15000");
+        
         JLabel searchLabel = new JLabel("Search:");
         JTextField searchField  = new JTextField("how about..? ");
         JButton searchButton = new JButton("Search");
@@ -330,13 +334,15 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
 				Map<String, SearchResult> results = jc.search("http://localhost:5000/api_search",searchText);
 				
 				MeetingSchedulingGenerator gen = new MeetingSchedulingGenerator();
-				gen.writeCustomMeetingSchedule(searchText, results, 10, 5);
+				gen.writeCustomMeetingSchedule(searchText, Float.parseFloat(budgetField.getText()), results, 10, 5);
 				refreshQuickOpenPanel(quickOpenUnsolvedJList, solutionBusiness.getUnsolvedFileList());
 				
 			}
 		});
         
-        
+
+        horizontalGroup.addComponent(budgetLabel);
+        horizontalGroup.addComponent(budgetField);
         horizontalGroup.addComponent(searchLabel);
         horizontalGroup.addComponent(searchField);
         horizontalGroup.addComponent(searchButton);
@@ -359,6 +365,8 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
         toolBarLayout.setHorizontalGroup(horizontalGroup);
         GroupLayout.ParallelGroup verticalGroup = toolBarLayout.createParallelGroup(GroupLayout.Alignment.CENTER);
         
+        verticalGroup.addComponent(budgetLabel);
+        verticalGroup.addComponent(budgetField);
         verticalGroup.addComponent(searchLabel);
         verticalGroup.addComponent(searchField);
         verticalGroup.addComponent(searchButton);
