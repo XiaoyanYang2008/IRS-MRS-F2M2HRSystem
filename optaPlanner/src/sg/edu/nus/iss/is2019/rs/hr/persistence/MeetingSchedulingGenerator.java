@@ -126,6 +126,11 @@ public class MeetingSchedulingGenerator extends LoggingMain {
 		solutionFileIO = new MeetingSchedulingXlsxFileIO();
 		outputDir = new File(CommonApp.determineDataDir(HumanResourcesPlanningApp.DATA_DIR_NAME), "unsolved");
 	}
+	
+	public void clearOutputFolder()
+	{
+		
+	}
 
 	// TODO: after calling API, how to change here to make dataset for planning?
 	private void writeMeetingSchedule(int meetingListSize, int roomListSize) {

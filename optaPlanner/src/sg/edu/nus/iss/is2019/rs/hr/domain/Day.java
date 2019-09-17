@@ -47,7 +47,8 @@ public class Day extends AbstractPersistable implements Labeled {
 
     @Override
     public String getLabel() {
-        return getDateString();
+//        return getDateString();
+    	return "Tiers";
     }
 
     @Override

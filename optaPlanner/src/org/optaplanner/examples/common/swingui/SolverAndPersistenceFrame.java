@@ -109,6 +109,7 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
     private JProgressBar progressBar;
     private JTextField scoreField;
     private JTextField budgetField;
+    private JList<Integer> groupList;
     private ShowConstraintMatchesDialogAction showConstraintMatchesDialogAction;
 
 
@@ -318,7 +319,7 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
         GroupLayout.SequentialGroup horizontalGroup = toolBarLayout.createSequentialGroup();
         
         
-        //CHANGES: customize common code for app specific.
+        //CHANGES: customize common code for HR app specific.
         JLabel budgetLabel = new JLabel("Budget:");
         JTextField budgetField  = new JTextField("15000");
         
@@ -334,21 +335,48 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
 				System.out.println("solutionBusiness:"+solutionBusiness);
 				System.out.println("search:"+ searchText);
 				JsonClient jc = new JsonClient();
-				Map<String, SearchResult> results = jc.search("http://localhost:5000/api_search",searchText);
+//				Map<String, SearchResult> results = jc.search("http://localhost:5000/api_search",searchText);
+				Map<String, SearchResult> results = jc.search(searchText);
+				
 				
 				MeetingSchedulingGenerator gen = new MeetingSchedulingGenerator();
-				gen.writeCustomMeetingSchedule(searchText, Float.parseFloat(budgetField.getText()), results, 10, 3);
+				gen.writeCustomMeetingSchedule(searchText, Float.parseFloat(budgetField.getText()), results, 10, groupList.getSelectedValue());
 				refreshQuickOpenPanel(quickOpenUnsolvedJList, solutionBusiness.getUnsolvedFileList());
 				
 			}
 		});
         
-
+        JButton clearButton = new JButton("Clear Search Result");
+        clearButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MeetingSchedulingGenerator gen = new MeetingSchedulingGenerator();
+				gen.clearOutputFolder();
+				refreshQuickOpenPanel(quickOpenUnsolvedJList, solutionBusiness.getUnsolvedFileList());
+			}
+		});
+        
+        JLabel groupLabel = new JLabel("Group:");
+        Integer[] gData = new Integer[] {1,2,3,4,5,6,7,8,9,10};
+        
+        groupList = new JList<Integer>(gData); //data has type Object[]
+//        list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+//        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        groupList.setVisibleRowCount(2);
+        groupList.setSelectedIndex(2);
+        
+        JScrollPane listScroller = new JScrollPane(groupList);
+//        listScroller.invalidate();
+        
+        horizontalGroup.addComponent(groupLabel);
+        horizontalGroup.addComponent(listScroller);
         horizontalGroup.addComponent(budgetLabel);
         horizontalGroup.addComponent(budgetField);
         horizontalGroup.addComponent(searchLabel);
         horizontalGroup.addComponent(searchField);
         horizontalGroup.addComponent(searchButton);
+        horizontalGroup.addComponent(clearButton);
         
         if (solutionBusiness.hasImporter()) {
             horizontalGroup.addComponent(importButton);
@@ -368,11 +396,14 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
         toolBarLayout.setHorizontalGroup(horizontalGroup);
         GroupLayout.ParallelGroup verticalGroup = toolBarLayout.createParallelGroup(GroupLayout.Alignment.CENTER);
         
+        verticalGroup.addComponent(groupLabel);
+        verticalGroup.addComponent(listScroller);
         verticalGroup.addComponent(budgetLabel);
         verticalGroup.addComponent(budgetField);
         verticalGroup.addComponent(searchLabel);
         verticalGroup.addComponent(searchField);
         verticalGroup.addComponent(searchButton);
+        verticalGroup.addComponent(clearButton);
         
         if (solutionBusiness.hasImporter()) {
             verticalGroup.addComponent(importButton);
