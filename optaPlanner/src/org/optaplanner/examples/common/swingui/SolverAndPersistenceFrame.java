@@ -316,11 +316,14 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
         solveButton.setPreferredSize(terminateSolvingEarlyButton.getPreferredSize());
 
         GroupLayout.SequentialGroup horizontalGroup = toolBarLayout.createSequentialGroup();
+        
+        
+        //CHANGES: customize common code for app specific.
         JLabel budgetLabel = new JLabel("Budget:");
         JTextField budgetField  = new JTextField("15000");
         
         JLabel searchLabel = new JLabel("Search:");
-        JTextField searchField  = new JTextField("how about..? ");
+        JTextField searchField  = new JTextField("machine learning");
         JButton searchButton = new JButton("Search");
         searchButton.addActionListener(new ActionListener() {
 			
@@ -334,7 +337,7 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
 				Map<String, SearchResult> results = jc.search("http://localhost:5000/api_search",searchText);
 				
 				MeetingSchedulingGenerator gen = new MeetingSchedulingGenerator();
-				gen.writeCustomMeetingSchedule(searchText, Float.parseFloat(budgetField.getText()), results, 10, 5);
+				gen.writeCustomMeetingSchedule(searchText, Float.parseFloat(budgetField.getText()), results, 10, 3);
 				refreshQuickOpenPanel(quickOpenUnsolvedJList, solutionBusiness.getUnsolvedFileList());
 				
 			}

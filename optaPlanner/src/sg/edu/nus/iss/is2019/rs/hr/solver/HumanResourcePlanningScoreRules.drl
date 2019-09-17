@@ -35,33 +35,33 @@ global HardMediumSoftScoreHolder scoreHolder;
 // Hard constraints usually
 // ############################################################################
 
-rule "Room conflict"
-    when
-        $leftAssignment : MeetingAssignment(room != null, $leftId : id, $room : room)
-        $rightAssignment : MeetingAssignment(room == $room, calculateOverlap($leftAssignment) > 0, id > $leftId)
-    then
-        scoreHolder.penalize(kcontext, $rightAssignment.calculateOverlap($leftAssignment));
-end
+//rule "Room conflict"
+//    when
+//        $leftAssignment : MeetingAssignment(room != null, $leftId : id, $room : room)
+//        $rightAssignment : MeetingAssignment(room == $room, calculateOverlap($leftAssignment) > 0, id > $leftId)
+//    then
+//        scoreHolder.penalize(kcontext, $rightAssignment.calculateOverlap($leftAssignment));
+//end
 
 // TODO Might be more efficient if a MeetingAssignment knows timeGrainList.size()
 // TODO Can be obsolete if MeetingAssignment uses @ValueRangeProvider from entity for timeGrainRange
-rule "Don't go in overtime"
-    when
-        MeetingAssignment(startingTimeGrain != null, $lastTimeGrainIndex : getLastTimeGrainIndex())
-        not TimeGrain(grainIndex == $lastTimeGrainIndex)
-    then
-        scoreHolder.penalize(kcontext, $lastTimeGrainIndex);
-end
+//rule "Don't go in overtime"
+//    when
+//        MeetingAssignment(startingTimeGrain != null, $lastTimeGrainIndex : getLastTimeGrainIndex())
+//        not TimeGrain(grainIndex == $lastTimeGrainIndex)
+//    then
+//        scoreHolder.penalize(kcontext, $lastTimeGrainIndex);
+//end
 
-rule "Required attendance conflict"
-    when
-        RequiredAttendance($leftId : id, $person : person, $leftMeeting : meeting)
-        RequiredAttendance(person == $person, $rightMeeting : meeting, id > $leftId)
-        $leftAssignment : MeetingAssignment(meeting == $leftMeeting, startingTimeGrain != null)
-        $rightAssignment : MeetingAssignment(meeting == $rightMeeting, calculateOverlap($leftAssignment) > 0)
-    then
-        scoreHolder.penalize(kcontext, $rightAssignment.calculateOverlap($leftAssignment));
-end
+// rule "Required attendance conflict"
+//    when
+//        RequiredAttendance($leftId : id, $person : person, $leftMeeting : meeting)
+//        RequiredAttendance(person == $person, $rightMeeting : meeting, id > $leftId)
+//        $leftAssignment : MeetingAssignment(meeting == $leftMeeting, startingTimeGrain != null)
+//        $rightAssignment : MeetingAssignment(meeting == $rightMeeting, calculateOverlap($leftAssignment) > 0)
+//    then
+//        scoreHolder.penalize(kcontext, $rightAssignment.calculateOverlap($leftAssignment));
+// end
 
 //rule "Required room capacity"
 //    when
@@ -70,6 +70,7 @@ end
 //        scoreHolder.penalize(kcontext, $requiredCapacity - $roomCapacity);
 //end
 
+/*
 rule "Start and end on same day"
     when
         MeetingAssignment(startingTimeGrain != null, $firstTimeGrain : startingTimeGrain, $lastTimeGrainIndex : getLastTimeGrainIndex())
@@ -77,57 +78,59 @@ rule "Start and end on same day"
     then
         scoreHolder.penalize(kcontext);
 end
-
+*/
 
 rule "Team within budget"
     when
        $leftAssignment : MeetingAssignment(room != null, $room : room, $leftId : id)
         accumulate(
-            $assignment : MeetingAssignment(room == $room, $leftId != id && calculateOverlap($leftAssignment) > 0);
+            $assignment : MeetingAssignment(room == $room, calculateOverlap($leftAssignment) > 0);
             $total : sum($assignment.getMeeting().getSalary())
         )
     then
 //        System.out.println(assignment);
-        scoreHolder.addHardConstraintMatch(kcontext, $total > $room.getSalaryBudget() ?(int)($room.getSalaryBudget()-$total):0);  //1+2, self+ other //addHardConstraintMatch
+        scoreHolder.addMediumConstraintMatch(kcontext, $total > $room.getSalaryBudget() ?(int)($room.getSalaryBudget()-$total):0);  //1+2, self+ other //addHardConstraintMatch
+end
+
+rule "Do all meetings as soon as possible"
+    when
+        MeetingAssignment(startingTimeGrain != null, $startingTimeIndex : startingTimeGrain.getGrainIndex(), $meeting: meeting)
+    then
+        scoreHolder.addMediumConstraintMatch(kcontext, (int)-(($startingTimeIndex+1)*($meeting.getNscore()*100)));
 end
 
 // ############################################################################
 // Medium constraints usually
 // ############################################################################
 
-rule "Required and preferred attendance conflict"
-    when
-        RequiredAttendance($person : person, $leftMeeting : meeting)
-        PreferredAttendance(person == $person, $rightMeeting : meeting)
-        $leftAssignment : MeetingAssignment(meeting == $leftMeeting, startingTimeGrain != null)
-        $rightAssignment : MeetingAssignment(meeting == $rightMeeting, calculateOverlap($leftAssignment) > 0)
-    then
-        // Fairness not implemented (see tennis example)
-        scoreHolder.penalize(kcontext);
-end
+//rule "Required and preferred attendance conflict"
+//    when
+//        RequiredAttendance($person : person, $leftMeeting : meeting)
+//        PreferredAttendance(person == $person, $rightMeeting : meeting)
+//        $leftAssignment : MeetingAssignment(meeting == $leftMeeting, startingTimeGrain != null)
+//        $rightAssignment : MeetingAssignment(meeting == $rightMeeting, calculateOverlap($leftAssignment) > 0)
+//    then
+//        // Fairness not implemented (see tennis example)
+//        scoreHolder.penalize(kcontext);
+//end
 
-rule "Preferred attendance conflict"
-    when
-        PreferredAttendance($leftId : id, $person : person, $leftMeeting : meeting)
-        PreferredAttendance(person == $person, $rightMeeting : meeting, id > $leftId)
-        $leftAssignment : MeetingAssignment(meeting == $leftMeeting, startingTimeGrain != null)
-        $rightAssignment : MeetingAssignment(meeting == $rightMeeting, calculateOverlap($leftAssignment) > 0)
-    then
-        // Fairness not implemented (see tennis example)
-        scoreHolder.penalize(kcontext);
-end
+//rule "Preferred attendance conflict"
+//    when
+//        PreferredAttendance($leftId : id, $person : person, $leftMeeting : meeting)
+//        PreferredAttendance(person == $person, $rightMeeting : meeting, id > $leftId)
+//        $leftAssignment : MeetingAssignment(meeting == $leftMeeting, startingTimeGrain != null)
+//        $rightAssignment : MeetingAssignment(meeting == $rightMeeting, calculateOverlap($leftAssignment) > 0)
+//    then
+//        // Fairness not implemented (see tennis example)
+//        scoreHolder.penalize(kcontext);
+//end
 
 // ############################################################################
 // Soft constraints usually
 // ############################################################################
 
-rule "Do all meetings as soon as possible"
-    when
-        MeetingAssignment(startingTimeGrain != null, $lastTimeGrainIndex : lastTimeGrainIndex)
-    then
-        scoreHolder.penalize(kcontext, $lastTimeGrainIndex);
-end
 
+/*
 rule "One TimeGrain break between two consecutive meetings"
     when
         MeetingAssignment(startingTimeGrain != null,  $leftEnd : getLastTimeGrainIndex())
@@ -165,4 +168,4 @@ rule "Room stability"
     then
         scoreHolder.penalize(kcontext);
 end
-
+*/

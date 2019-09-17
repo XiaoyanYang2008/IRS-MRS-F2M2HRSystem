@@ -86,7 +86,7 @@ public class TimeGrain extends AbstractPersistable implements Labeled {
     @Override
     public String getLabel() {
 //        return getTimeString();
-    	return "";
+    	return "Tier "+grainIndex;
     }
 
     @Override
