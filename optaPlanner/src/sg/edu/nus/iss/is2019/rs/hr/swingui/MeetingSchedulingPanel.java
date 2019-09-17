@@ -18,7 +18,9 @@ package sg.edu.nus.iss.is2019.rs.hr.swingui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -238,19 +240,30 @@ public class MeetingSchedulingPanel extends SolutionPanel<MeetingSchedule> {
         public MeetingAssignmentAction(MeetingAssignment meetingAssignment) {
             super(meetingAssignment.getLabel());
             putValue(SHORT_DESCRIPTION, "<html>Topic: " + meetingAssignment.getMeeting().getTopic() + "<br/>"
-                    + "Date and time: " + defaultIfNull(meetingAssignment.getStartingDateTimeString(), "unassigned") + "<br/>"
-                    + "Duration: " + meetingAssignment.getMeeting().getDurationString() + "<br/>"
-                    + "Room: " + defaultIfNull(meetingAssignment.getRoom(), "unassigned")
+//                    + "Date and time: " + defaultIfNull(meetingAssignment.getStartingDateTimeString(), "unassigned") + "<br/>"
+//                    + "Duration: " + meetingAssignment.getMeeting().getDurationString() + "<br/>"
+//                    + "Room: " + defaultIfNull(meetingAssignment.getRoom(), "unassigned")
                     + "</html>");
             this.meetingAssignment = meetingAssignment;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
+        	
+        	Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+            if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                try {
+                	URL url = new URL(this.meetingAssignment.getMeeting().getUrl());
+                    desktop.browse(url.toURI());
+
+                } catch (Exception exp) {
+                    exp.printStackTrace();
+                }
+            }
             // TODO Add support for moving meetings like in other examples
-            JOptionPane.showMessageDialog(MeetingSchedulingPanel.this.getTopLevelAncestor(),
-                    "The GUI does not support this action yet.",
-                    "Unsupported in GUI", JOptionPane.ERROR_MESSAGE);
+//            JOptionPane.showMessageDialog(MeetingSchedulingPanel.this.getTopLevelAncestor(),
+//                    "The GUI does not support this action yet.",
+//                    "Unsupported in GUI", JOptionPane.ERROR_MESSAGE);
         }
 
     }

@@ -6,3 +6,10 @@ Required Python Library
 2. pdfminer - This is to convert PDF content to text.
 3. python-docx - This is to convert DOCX content to text.
 4. csv - This is to read/write/modify CSV files
+
+planning:
+team budget
+
+1 leader
+number of team
+how to best fit other candidates.

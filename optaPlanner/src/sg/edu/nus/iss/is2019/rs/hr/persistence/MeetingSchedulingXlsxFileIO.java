@@ -140,6 +140,7 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
             readHeaderCell("Topic");
             readHeaderCell("Salary");
             readHeaderCell("NScore");
+            readHeaderCell("Url");
             readHeaderCell("Group");
             readHeaderCell("Duration");
             readHeaderCell("Speakers");
@@ -170,6 +171,7 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
                 meeting.setTopic(nextStringCell().getStringCellValue());
                 meeting.setSalary(Double.parseDouble(nextStringCell().getStringCellValue()));
                 meeting.setNscore(Double.parseDouble(nextStringCell().getStringCellValue()));
+                meeting.setUrl(nextStringCell().getStringCellValue());
                 
                 meeting.setEntireGroupMeeting(nextStringCell().getStringCellValue().toLowerCase().equals("y"));
                 readMeetingDuration(meeting);
@@ -527,6 +529,7 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
             nextHeaderCell("Topic");
             nextHeaderCell("Salary");
             nextHeaderCell("NScore");
+            nextHeaderCell("Url");
             nextHeaderCell("Group");
             nextHeaderCell("Duration");
             nextHeaderCell("Speakers");
@@ -543,6 +546,7 @@ public class MeetingSchedulingXlsxFileIO extends AbstractXlsxSolutionFileIO<Meet
                 nextCell().setCellValue(meeting.getTopic());
                 nextCell().setCellValue(meeting.getSalary()+"");
                 nextCell().setCellValue(meeting.getNscore()+"");
+                nextCell().setCellValue(meeting.getUrl()+"");
                 nextCell().setCellValue(meeting.isEntireGroupMeeting() ? "Y" : "");
                 nextCell().setCellValue(meeting.getDurationInGrains() * TimeGrain.GRAIN_LENGTH_IN_MINUTES);
                 nextCell().setCellValue(meeting.getSpeakerList() == null ? "" :

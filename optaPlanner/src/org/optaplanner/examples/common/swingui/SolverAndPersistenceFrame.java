@@ -335,7 +335,7 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
 				System.out.println("solutionBusiness:"+solutionBusiness);
 				System.out.println("search:"+ searchText);
 				JsonClient jc = new JsonClient();
-//				Map<String, SearchResult> results = jc.search("http://localhost:5000/api_search",searchText);
+//				Map<String, SearchResult> results = jc.search("http://localhost:5000/api_search",searchText); //DEBUG for local
 				Map<String, SearchResult> results = jc.search(searchText);
 				
 				
@@ -364,7 +364,7 @@ public class SolverAndPersistenceFrame<Solution_> extends JFrame {
 //        list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 //        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         groupList.setVisibleRowCount(2);
-        groupList.setSelectedIndex(2);
+        groupList.setSelectedIndex(1);
         
         JScrollPane listScroller = new JScrollPane(groupList);
 //        listScroller.invalidate();

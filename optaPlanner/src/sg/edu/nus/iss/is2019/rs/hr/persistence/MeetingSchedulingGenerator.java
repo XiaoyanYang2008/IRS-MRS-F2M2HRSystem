@@ -129,7 +129,9 @@ public class MeetingSchedulingGenerator extends LoggingMain {
 	
 	public void clearOutputFolder()
 	{
-		
+		for(File file: outputDir.listFiles()) 
+		    if (!file.isDirectory()) 
+		        file.delete();
 	}
 
 	// TODO: after calling API, how to change here to make dataset for planning?
@@ -182,7 +184,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
 	}
 
 	private String determineFileName(int meetingListSize, int timeGrainListSize, int roomListSize) {
-		return meetingListSize + "meetings-" + timeGrainListSize + "timegrains-" + roomListSize + "group";
+		return meetingListSize + "Candidates-" + timeGrainListSize + "Tiers-" + roomListSize + "Groups";
 	}
 
 	public MeetingSchedule createCustomMeetingSchedule(float budget, Map<String, SearchResult> results, String fileName,
@@ -197,8 +199,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
 		constraintConfiguration.setId(0L);
 		meetingSchedule.setConstraintConfiguration(constraintConfiguration);
 
-		createCustomMeetingListAndAttendanceList(meetingSchedule, results); // TODO: LeeSeng understand this and fill up
-																			// accordingly.
+		createCustomMeetingListAndAttendanceList(meetingSchedule, results); 
 		createTimeGrainList(meetingSchedule, timeGrainListSize);
 		createCustomRoomList(budget, meetingSchedule, roomListSize);
 		List<Person> plist = new ArrayList();
@@ -258,6 +259,7 @@ public class MeetingSchedulingGenerator extends LoggingMain {
 			Meeting meeting = new Meeting();
 			meeting.setSalary(Double.parseDouble(sr.getExpectedMonthlySalary()));
 			meeting.setNscore(Double.parseDouble(sr.getNScore()));
+			meeting.setUrl(sr.getProfileURL());
 			meeting.setId((long) i);
 //            String topic = topicGenerator.generateNextValue();
 			meeting.setTopic(sr.getName() + String.format(" %.2f", Float.parseFloat(sr.getNScore())) + " Salary:"

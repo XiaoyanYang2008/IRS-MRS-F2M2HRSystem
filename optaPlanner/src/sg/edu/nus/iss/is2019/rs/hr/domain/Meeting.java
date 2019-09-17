@@ -25,6 +25,7 @@ import sg.edu.nus.iss.is2019.rs.hr.app.JsonClient.SearchResult;
 public class Meeting extends AbstractPersistable {
 
 //	private SearchResult sr;
+	private String url;
 	private double salary;
 	private double nscore;
 	private String topic;
@@ -126,7 +127,15 @@ public class Meeting extends AbstractPersistable {
         return (durationInGrains * TimeGrain.GRAIN_LENGTH_IN_MINUTES) + " minutes";
     }
 
-    public String getLabel() {
+    public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getLabel() {
         return topic;
     }
 
