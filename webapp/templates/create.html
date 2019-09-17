@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="./static/index.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <title>Recruitment Management System</title>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo">Recruitment Management System</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/classifier">Classifier</a></li>
+            <li><a href="/searcher">Searcher</a></li>
+            <li><a href="/uploader">Uploader</a></li>
+            <li><a href="creator">Creator</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+
+    </div>
+    <div class="row">
+        <form class="col s12" method="post" name="createResume" action="createResumeAction">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Full Name" id="first_name" type="text" class="validate" name="name">
+                    <label for="first_name">Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="email" type="email" class="validate">
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Profile Url" id="profil_url" type="text" class="validate" name="profileURL">
+                    <label for="first_name">Profile Url (LinkedIn, Indeed,...</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Quantative Researcher at J.P Morgan" id="role" type="text"
+                           class="validate" name="role">
+                    <label for="first_name">Current Role</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="In SGD" id="salary" type="text"
+                           class="validate" name="monthlySalary">
+                    <label for="first_name">Current Monthly Salary</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                                <textarea id="about" class="materialize-textarea"
+                                          data-length="120" name="about"></textarea>
+                    <label for="textarea1">Tell us about you...</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                                <textarea id="experience" class="materialize-textarea"
+                                          data-length="120" name="experience"></textarea>
+                    <label for="textarea1">Your work experiencee</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                                <textarea id="educational" class="materialize-textarea"
+                                          data-length="120" name="education"></textarea>
+                    <label for="textarea1">Your educational background</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                                <textarea id="licensesCertifications" class="materialize-textarea"
+                                          data-length="120" name="licensesCertifications"></textarea>
+                    <label for="textarea1">Licenses and Certifications</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                                <textarea id="skillsEndorsements" class="materialize-textarea"
+                                          data-length="120" name="skillsEndorsements"></textarea>
+                    <label for="textarea1">Skills and endorsments</label>
+                </div>
+            </div>
+            <div class="file-field input-field">
+                <div class="btn">
+                    <span>Resume</span>
+                    <input type="file" name="uploadfile">
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="row">
+                    <button class="btn waves-effect waves-light" type="submit">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>
