@@ -87,7 +87,7 @@ def search_by_tfidf(search_keywords):
     df = df[df['Score'] != 0]
 
     if max(df['Score'] != 0):
-        df['NScore'] = df['Score'] / max(df['Score'])
+        df['NScore'] = df['Score'] / max(df['Score'])  # rescale for optaPlanner planning
     else:
         df['NScore'] = df['Score']
 

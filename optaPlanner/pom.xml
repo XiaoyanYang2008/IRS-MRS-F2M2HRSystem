@@ -12,7 +12,12 @@
 
     <artifactId>optaplanner-examples</artifactId>
 
-    <name>OptaPlanner HR</name>
+    <!-- Output to jar format -->
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <!-- name>HR-planner</name -->
+
+    <name>OptaPlanner-HR</name>
     <description>
         OptaPlanner solves planning problems.
         This lightweight, embeddable planning engine implements powerful and scalable algorithms
@@ -24,6 +29,8 @@
 
     <properties>
         <java.module.name>sg.edu.nus.iss.is2019.rs.hr</java.module.name>
+        <jdk.version>1.8</jdk.version>
+
     </properties>
 
     <repositories>
@@ -46,6 +53,8 @@
     </repositories>
 
     <build>
+        <finalName>OptaPlanner-HR</finalName>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -66,7 +75,7 @@
                     <!-- It is impossible to write a configuration that is compatible with
                         both exec:java and exec:exec -->
                     <configuration>
-                        <mainClass>org.optaplanner.examples.app.OptaPlannerExamplesApp</mainClass>
+                        <mainClass>sg.edu.nus.iss.is2019.rs.hr.app.HumanResourcesPlanningApp</mainClass>
                         <arguments>
                             <argument>-Xms256m</argument>
                             <!-- Most examples run (potentially slower) with max heap of 128 MB
@@ -74,6 +83,39 @@
                             <argument>-Xmx1536m</argument>
                             <argument>-server</argument>
                         </arguments>
+                    </configuration>
+                </plugin>
+                <!-- Set a JDK compiler level -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                    </configuration>
+                </plugin>
+                <!-- Make this jar executable -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <!-- DO NOT include log4j.properties file in your Jar -->
+                        <excludes>
+                            <exclude>**/log4j.properties</exclude>
+                        </excludes>
+                        <archive>
+                            <manifest>
+                                <!-- Jar file entry point -->
+                                <mainClass>sg.edu.nus.iss.is2019.rs.hr.app.HumanResourcesPlanningApp</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
                     </configuration>
                 </plugin>
             </plugins>
@@ -181,11 +223,8 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.1.1</version>
-        </dependency -->
+        <!-- dependency> <groupId>javax.ws.rs</groupId> <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1.1</version> </dependency -->
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
