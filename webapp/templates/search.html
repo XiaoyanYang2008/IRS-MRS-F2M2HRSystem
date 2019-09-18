@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="./static/index.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <title>Recruitment Management System</title>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo">Recruitment Management System</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/classifier">Classifier</a></li>
+            <li><a href="/searcher">Searcher</a></li>
+            <li><a href="/uploader">Uploader</a></li>
+            <li><a href="creator">Creator</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="valign-wrapper" style="width:100%;height:100%;position: absolute;">
+    <div class="valign" style="width:100%;">
+        <div class="container">
+            <form class="col s12" method="post" name="searchResume" action="searchResumeAction">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" id="autocomplete-input" class="autocomplete" name="importantKey">
+                                <label for="autocomplete-input">Mandatory Search Key</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" id="autocomplete-input" class="autocomplete" name="optionKey">
+                                <label for="autocomplete-input">Optional Search Key</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="row">
+                            <p>
+                                <label>
+                                    <input name="algorithmType" type="radio" value="KNN" checked/>
+                                    <span>Resume Search</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input name="algorithmType" type="radio" value="cosinesim"/>
+                                    <span>Resume Rank</span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="row">
+                            <button class="btn waves-effect waves-light" type="submit">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

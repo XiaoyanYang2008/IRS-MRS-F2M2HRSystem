@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="./static/index.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <title>Recruitment Management System</title>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">Recruitment Management System</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/classifier">Classifier</a></li>
+            <li><a href="/searcher">Searcher</a></li>
+            <li><a href="/uploader">Uploader</a></li>
+            <li><a href="creator">Creator</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="row" style="width:100%">
+    <div class="col m5"><h3>Results</h3></div>
+</div>
+{% if results != null %}
+    <div class="valign-wrapper" style="width:100%;position: absolute;">
+        <div class="valign" style="width:100%">
+            <div class="container">
+                <div class="row">
+                    {% for m in results: %}
+                        <div class="col m6">
+                            <div class="card">
+                                <div class="card-image waves-effect waves-block waves-light">
+                                </div>
+                                <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">{{ m.name }}<i class="material-icons right">more_vert</i></span>
+                                    {% if 'https://' in m.filename %}
+                                        <p class="truncate"><a href="{{ m.filename }}">{{ m.name }}</a></p>
+                                    {% else %}
+                                        <p class="truncate">
+                                            <a href="{{ url_for('custom_static', filename=m.filename) }}">{{ m.filename }}</a>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                                <div class="card-reveal">
+                                    <span class="card-title grey-text text-darken-4">{{ m.name }}<i class="material-icons right">close</i></span>
+                                    <p>{{ m.name }} has a score of {{ "%.3f"|format(m.score) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="row" style="width:100%">
+        <div class="col m5"><p>No results found!</p></div>
+    </div>
+{% endif %}
+</body>
+</html>
