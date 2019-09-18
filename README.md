@@ -10,6 +10,5 @@ Required Python Library
 planning:
 team budget
 
-1 leader
-number of team
-how to best fit other candidates.
+HR system, 
+http://server.leeseng.tech:5000/
