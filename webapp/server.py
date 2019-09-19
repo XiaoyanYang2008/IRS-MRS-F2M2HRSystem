@@ -5,6 +5,7 @@ from flask import (Flask, render_template, request, send_from_directory, jsonify
 from werkzeug import secure_filename
 
 import app_constants
+import classifier
 import lk_parser
 import resumeDB_pb2
 import search
@@ -12,7 +13,7 @@ import upload_resume
 from lk_parser import findResumeByURL
 
 SECTION_SEPERATOR = " \r\n"
-
+classifierModel = classifier.resumeClassifier()
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './Resumes/'
@@ -38,6 +39,9 @@ def createResumePage():
 def uploadResumePage():
     return render_template('uploadResumePage.html')
 
+@app.route('/classifier')
+def classifierPage():
+    return  render_template('classifier.html')
 
 @app.route('/editResume')
 def editResume():
@@ -166,6 +170,19 @@ def searchResumeAction():
         result = "No 'Mandatory Search Key' input"
         return render_template('searchResumePageResult.html', results=result)
 
+@app.route('/resumeSubmit', methods=['GET', 'POST'])
+def get_resume():
+    # data = json.dumps(request.form)
+    print(request.files['resumes'])
+    resumes = []
+    for name, file in request.files.items():
+        filename = uploadFile(file)
+        resume = classifier.extract_text_from_pdf(app.config['UPLOAD_FOLDER']+filename)
+        info = classifierModel.label_encoder.classes_[classifierModel.model.predict(
+            classifierModel.vectoriser.transform([resume]))]
+        resumes.append((filename,info))
+
+    return render_template('classifierResult.html',results=resumes)
 
 @app.route('/Resumes/<path:filename>')
 def custom_static(filename):
