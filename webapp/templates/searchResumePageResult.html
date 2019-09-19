@@ -19,6 +19,8 @@
         user-select: none;
       }
 
+
+
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -28,6 +30,8 @@
     </style>
 </head>
 <body class="bg-light">
+<div class="view"
+     style="background-image: url('/resources/pexels-photo-2936832.jpeg'); background-repeat: no-repeat; background-size: cover; background-position: top center;   background-attachment: fixed;">
 <div class="container">
     <div class="py-5 text-center">
         <div class="row">
@@ -58,32 +62,32 @@
         </div>
         {% if hasA == "hasA" %}
         <table class="table-hover">
-			<thead>
+            <thead>
             <tr style="text-align:left">
-                  <th>Rank</th>
-                  <th>Name</th>
-                  <th>Resume</th>
-                  <th>Score</th>
-			  </tr>
-			</thead>
-			{% for m in results :%}
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Resume</th>
+                <th>Score</th>
+            </tr>
+            </thead>
+            {% for m in results :%}
             {% if m.type == 'typeA' %}
-				<tbody>
-                <tr style="text-align:left">
-						<td>{{m.rank}}</td>
-                        {% if 'https://' in m.filename %}
-                    <td><a href="{{url_for('editResume',profileURL=m.filename)}}">{{m.name}}</a></td>
-                        <td><a href="{{m.filename}}" target="_blank">{{m.filename}}</a></td>
-                        {% else %}
-                    <td>{{m.name}}</td>
-                        <td><a href="{{url_for('custom_static', filename=m.filename)}}"
-                               target="_blank">{{m.filename}}</a></td>
-                        {% endif%}
-                        <td>{{"%.3f"|format(m.score)}}</td>
-			  		</tr>
-				</tbody>
+            <tbody>
+            <tr style="text-align:left">
+                <td>{{m.rank}}</td>
+                {% if 'https://' in m.filename %}
+                <td><a href="{{url_for('editResume',profileURL=m.filename)}}">{{m.name}}</a></td>
+                <td><a href="{{m.filename}}" target="_blank">{{m.filename}}</a></td>
+                {% else %}
+                <td>{{m.name}}</td>
+                <td><a href="{{url_for('custom_static', filename=m.filename)}}"
+                       target="_blank">{{m.filename}}</a></td>
+                {% endif%}
+                <td>{{"%.3f"|format(m.score)}}</td>
+            </tr>
+            </tbody>
             {% endif%}
-			{% endfor %}
+            {% endfor %}
         </table>
         {% else %}
         <div class="row">
@@ -98,30 +102,30 @@
         </div>
         {% if hasB == "hasB" %}
         <table class="table-hover">
-			<thead>
+            <thead>
             <tr style="text-align:left">
-                  <th>Rank</th>
-                  <th>Name</th>
-                  <th>Resume</th>
-                  <th>Score</th>
-			  </tr>
-			</thead>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Resume</th>
+                <th>Score</th>
+            </tr>
+            </thead>
             {% for m in results :%}
             {% if m.type == 'typeB' %}
-				<tbody>
-                <tr style="text-align:left">
-                        <td>{{m.rank}}</td>
-                    <td style="text-align:left">{{m.name}}</td>
-                        {% if 'https://' in m.filename %}
-                        <td><a href="{{m.filename}}">{{m.filename}}</a></td>
-                        {% else %}
-                        <td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
-                        {% endif%}
-                    <td>{{"%.3f"|format(m.score)}}</td>
-			  		</tr>
-				</tbody>
+            <tbody>
+            <tr style="text-align:left">
+                <td>{{m.rank}}</td>
+                <td style="text-align:left">{{m.name}}</td>
+                {% if 'https://' in m.filename %}
+                <td><a href="{{m.filename}}">{{m.filename}}</a></td>
+                {% else %}
+                <td><a href="{{url_for('custom_static', filename=m.filename)}}">{{m.filename}}</a></td>
+                {% endif%}
+                <td>{{"%.3f"|format(m.score)}}</td>
+            </tr>
+            </tbody>
             {% endif %}
-			{% endfor %}
+            {% endfor %}
         </table>
         {% else %}
         <div class="row">
@@ -133,9 +137,17 @@
         </div>
         <div class="row">
             <div class="col-sm" align="left"><a href="/">Back to Menu</a></div>
-        </div-->
-            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col-sm">&nbsp;</div>
+        </div>
+        <div class="row">
+            <div class="col-sm">&nbsp;</div>
+        </div>
+        {% endif %}
     </div>
+</div>
+</div>
 </div>
 </body>
 <script crossorigin="anonymous"

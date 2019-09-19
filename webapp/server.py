@@ -30,6 +30,10 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/resources/<path:path>')
+def send_resources(path):
+    return send_from_directory('resources', path)
+
 @app.route('/createResumePage')
 def createResumePage():
     return render_template('createResumePage.html', resume=resumeDB_pb2.Resume())
