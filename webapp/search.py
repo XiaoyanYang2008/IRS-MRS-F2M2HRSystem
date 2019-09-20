@@ -56,20 +56,33 @@ def gethasB():
 
 def ui_search(important_search):
     global hasA
-    hasA = 'hasA'
     df1 = search_by_tfidf(important_search)
     # print(df1)
 
     flask_return = []
 
     rank = 0
+    # for idx, row in df1.head(20).iterrows():
+    #     name = row['name']
+    #     filename = row['profileURL']
+    #     score = row['Score']
+    #     rank = rank + 1
+    #     flask_return.append(ResultElement(rank, name, filename, score, 'typeA'))
     for idx, row in df1.head(20).iterrows():
         name = row['name']
         filename = row['profileURL']
-        score = row['Score']
+        score = row['NScore']
+        if (score <= 1 and score > 0.75):
+            type = 'typeA'
+            hasA = 'hasA'
+        elif (score <0.75 and score >0.4):
+            type = 'typeB'
+            hasB = 'hasB'
+        else:
+            type = 'noType'
         rank = rank + 1
-        flask_return.append(ResultElement(rank, name, filename, score, 'typeA'))
-
+        res = ResultElement(rank, name, filename, score, type)
+        flask_return.append(res)
     return flask_return
 
 
