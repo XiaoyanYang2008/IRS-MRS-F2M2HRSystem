@@ -19,6 +19,13 @@
         user-select: none;
       }
 
+          html,
+    body,
+    header,
+    .view {
+      height: 100%;
+    }
+
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -27,61 +34,64 @@
     </style>
 </head>
 <body class="bg-light">
-<div class="container">
-    <div class="py-5 text-center">
-        <form method="post" name="searchResume" action="searchResumeAction">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-sm-4"><h3 align="left">Search Resume Page</h3></div>
-                    <div class="col-sm"></div>
+<div class="view"
+     style="background-image: url('/resources/pexels-photo-2936832.jpeg'); background-repeat: no-repeat; background-size: cover; background-position: top center;   background-attachment: fixed;">
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <form method="post" name="searchResume" action="searchResumeAction">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm"><h3 align="left">Search Resume Page</h3></div>
+                        <div class="col-sm"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-7" align="left"><label for="importantKey">Mandatory Search Key </label></div>
+                    </div>
+                    <div class="row">
+                        <div align="left" class="col-sm-7"><input class="form-control" id="importantKey" maxlength="1000"
+                                                                  name="importantKey"></div>
+                        <div class="col-sm"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-7" align="left"><label for="optionKey">Optional Search Key </label></div>
+                    </div>
+                    <div class="row">
+                        <div align="left" class="col-sm-7"><input class="form-control" id="optionKey" maxlength="100"
+                                                                  name="optionKey"></div>
+                        <div class="col-sm"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div align="left" class="col-sm"><input id="KNN" name="algorithmType" type="radio"
+                                                                value="KNN"> <label
+                                for="KNN">KNN</label></div>
+                        <div align="left" class="col-sm"><input checked id="cosinesim" name="algorithmType" type="radio"
+                                                                value="cosinesim"> <label
+                                for="cosinesim">Cosine Similarity</label></div>
+                        <div class="col-sm"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div align="left" class="col-sm"><input Value="Search" class="btn btn-primary btn-lg btn-block"
+                                                                type="submit"
+                                                                name="Put Record"></div>
+                        <div class="col-sm-5"></div>
+                        <div class="col-sm-5"></div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm">&nbsp;</div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-7" align="left"><label for="importantKey">Mandatory Search Key </label></div>
-                </div>
-                <div class="row">
-                    <div align="left" class="col-sm-7"><input class="form-control" id="importantKey" maxlength="1000"
-                                                              name="importantKey"></div>
-                    <div class="col-sm"></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">&nbsp;</div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-7" align="left"><label for="optionKey">Optional Search Key </label></div>
-                </div>
-                <div class="row">
-                    <div align="left" class="col-sm-7"><input class="form-control" id="optionKey" maxlength="100"
-                                                              name="optionKey"></div>
-                    <div class="col-sm"></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">&nbsp;</div>
-                </div>
-                <div class="row">
-                    <div align="left" class="col-sm"><input id="KNN" name="algorithmType" type="radio"
-                                                            value="KNN"> <label
-                            for="KNN">KNN</label></div>
-                    <div align="left" class="col-sm"><input checked id="cosinesim" name="algorithmType" type="radio"
-                                                            value="cosinesim"> <label
-                            for="cosinesim">Cosine Similarity</label></div>
-                    <div class="col-sm"></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">&nbsp;</div>
-                </div>
-                <div class="row">
-                    <div align="left" class="col-sm"><input Value="Search" class="btn btn-primary btn-lg btn-block"
-                                                            type="submit"
-                                                            name="Put Record"></div>
-                    <div class="col-sm-5"></div>
-                    <div class="col-sm-5"></div>
-                </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
 </div>
 </div>
 </body>
