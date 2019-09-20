@@ -3,13 +3,13 @@
 ![logo](webapp/resources/ReportCover.png)
 
 # SECTION 2 : EXECUTIVE SUMMARY / PAPER ABSTRACT
-HR System comprised of many different modules and functions. Our project will be focusing on Recruitment management module and Scheduling & rota management module of a HR system.
+HR System comprised of many different modules and functions. Our project will be focusing on Recruitment management module and Scheduling & rota management module of an HR system.
 
-After posting a job position to various job agencies, hiring manager will start receiving resumes from HR to review and select candidates. What if there are more than one position to fill in? Having to review every line in every resume to identify the potential candidates, soon becomes a chore and many valuable time is taken up to go through these resume. One of our objectives is to help manager deal with this issue, by filtering through these resumes and find and recommend the best set of candidates. 
+After posting a job position to various job agencies, hiring manager will start receiving resumes from HR to review and select candidates. What if there are more than one position to fill in? Having to review every line in every resume to identify the potential candidates, soon becomes a chore and many valuable time is taken up to go through these resumes. One of our objectives is to help managers deal with this issue, by filtering through these resumes and find and recommend the best set of candidates.
 
 At the same time, when HR manager upload the resume into the system, they can also check what other positions might be suitable for the submitted resume. Potentially forward it to other hiring manager for their review.
 
-And what happen after the staff(s) are hired? How should the manager, organize and plan out the team structure to ensure skills are matching and team budget is met. The scheduling & rota management module is set up to help manager to manage this.
+And what will happen after the staff(s) are hired? How should the manager, organize and plan out the team structure to ensure skills are matching and team budget is met. The scheduling & rota management module is set up to help manager to manage this.
 
 
 # SECTION 3 : CREDITS / PROJECT CONTRIBUTION
