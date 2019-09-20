@@ -9,9 +9,9 @@
 # SECTION 3 : CREDITS / PROJECT CONTRIBUTION
 | Official Full Name | Student ID | Work Items (Who Did What) | Email (Optional) |
 | :---: | :---: | :---: | :---: |
-| TEA LEE SENG | A0198538J |  | e0402079@u.nus.edu / TEALEESENG@gmail.com |
-| NG SIEW PHENG | A0198525R  | Upload resume module, Text Pre-processing and project report & video | e0402066@u.nus.edu |
-| YANG XIAOYAN | A0056720L |  | e0401594@u.nus.edu |
+| TEA LEE SENG | A0198538J | Create resume module, Search by cosine, optaPlanner, developer guide | e0402079@u.nus.edu / TEALEESENG@gmail.com |
+| NG SIEW PHENG | A0198525R  | Upload resume module, Text Pre-processing, Search by KNN, Main project report editor & video, optaPlanner constraints tuning | e0402066@u.nus.edu |
+| YANG XIAOYAN | A0056720L | optaPlanner constraints tuning | e0401594@u.nus.edu |
 | Tarun Rajkumar | A0198522X |  | e0402063@u.nus.edu |
 
 # SECTION 4 : VIDEO OF SYSTEM MODELLING & USE CASE DEMO
@@ -37,6 +37,11 @@ To run Webhook server.
     - note: uses pycharm 2019.1.x. pycharm 2019.2.x needs to comments out server.py in pydevd_dont_trace_files.py under pycharm program folder. Refers bug report, https://youtrack.jetbrains.com/issue/PY-37609
 
 
-HR system, 
-http://server.leeseng.tech:5000/
+
+To run optaPlanner,
+1. sudo apt install maven
+2. cd optaplanner/
+3. mvn dependency:copy-dependencies
+4. mvn package -Dcheckstyle.skip
+5. ./run.sh
 
