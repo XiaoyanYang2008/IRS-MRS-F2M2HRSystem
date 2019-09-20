@@ -10,7 +10,7 @@
 | Official Full Name | Student ID | Work Items (Who Did What) | Email (Optional) |
 | :---: | :---: | :---: | :---: |
 | TEA LEE SENG | A0198538J |  | e0402079@u.nus.edu / TEALEESENG@gmail.com |
-| NG SIEW PHENG | A0198525R  |  | e0402066@u.nus.edu |
+| NG SIEW PHENG | A0198525R  | Upload resume module, Text Pre-processing and project report & video | e0402066@u.nus.edu |
 | YANG XIAOYAN | A0056720L |  | e0401594@u.nus.edu |
 | Tarun Rajkumar | A0198522X |  | e0402063@u.nus.edu |
 
