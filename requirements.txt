@@ -1,5 +1,0 @@
-werkzeug
-pdfminer
-python-docx
-csv
-scikit-learn

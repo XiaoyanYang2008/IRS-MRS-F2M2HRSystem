@@ -46,7 +46,7 @@ public class HumanResourcesPlanningApp extends CommonApp<MeetingSchedule> {
 
     public HumanResourcesPlanningApp() {
         super("Team building",
-                "Assign meetings a starting time and a room.",
+                "Build teams based on skills relevancy and budget.",
                 SOLVER_CONFIG, DATA_DIR_NAME,
                 MeetingSchedulingPanel.LOGO_PATH);
     }
