@@ -3,15 +3,21 @@
 ![logo](webapp/resources/ReportCover.png)
 
 # SECTION 2 : EXECUTIVE SUMMARY / PAPER ABSTRACT
+HR System comprised of many different modules and functions. Our project will be focusing on Recruitment management module and Scheduling & rota management module of a HR system.
 
+After posting a job position to various job agencies, hiring manager will start receiving resumes from HR to review and select candidates. What if there are more than one position to fill in? Having to review every line in every resume to identify the potential candidates, soon becomes a chore and many valuable time is taken up to go through these resume. One of our objectives is to help manager deal with this issue, by filtering through these resumes and find and recommend the best set of candidates. 
+
+At the same time, when HR manager upload the resume into the system, they can also check what other positions might be suitable for the submitted resume. Potentially forward it to other hiring manager for their review.
+
+And what happen after the staff(s) are hired? How should the manager, organize and plan out the team structure to ensure skills are matching and team budget is met. The scheduling & rota management module is set up to help manager to manage this.
 
 
 # SECTION 3 : CREDITS / PROJECT CONTRIBUTION
 | Official Full Name | Student ID | Work Items (Who Did What) | Email (Optional) |
 | :---: | :---: | :---: | :---: |
 | TEA LEE SENG | A0198538J | Create resume module, Search by cosine, optaPlanner, developer guide | e0402079@u.nus.edu / TEALEESENG@gmail.com |
-| NG SIEW PHENG | A0198525R  | Upload resume module, Text Pre-processing, Search by KNN, Main project report editor & video, optaPlanner constraints tuning | e0402066@u.nus.edu |
-| YANG XIAOYAN | A0056720L | optaPlanner constraints tuning | e0401594@u.nus.edu |
+| NG SIEW PHENG | A0198525R  | Upload resume module, Text Pre-processing, Main project report editor & video, optaPlanner constraints tuning | e0402066@u.nus.edu |
+| YANG XIAOYAN | A0056720L | Search by KNN, optaPlanner constraints tuning | e0401594@u.nus.edu |
 | Tarun Rajkumar | A0198522X |  | e0402063@u.nus.edu |
 
 # SECTION 4 : VIDEO OF SYSTEM MODELLING & USE CASE DEMO
