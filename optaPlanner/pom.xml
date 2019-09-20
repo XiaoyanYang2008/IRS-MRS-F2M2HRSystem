@@ -30,7 +30,7 @@
     <properties>
         <java.module.name>sg.edu.nus.iss.is2019.rs.hr</java.module.name>
         <jdk.version>1.8</jdk.version>
-
+        <src.dir>src</src.dir>
     </properties>
 
     <repositories>
@@ -54,7 +54,23 @@
 
     <build>
         <finalName>OptaPlanner-HR</finalName>
-
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.drl</include>
+                    <include>**/*.png</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>resources</directory>
+                <includes>
+                    <include>**/*.png</include>
+                </includes>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>

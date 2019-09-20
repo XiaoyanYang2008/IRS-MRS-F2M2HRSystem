@@ -1,5 +1,5 @@
-# SECTION 1 : PROJECT TITLE
-### F2M2 HR System
+# SECTION 1 : F2M2 HR System
+
 ![logo](webapp/resources/ReportCover.png)
 
 # SECTION 2 : EXECUTIVE SUMMARY / PAPER ABSTRACT
