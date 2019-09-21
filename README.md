@@ -9,7 +9,7 @@ After posting a job position to various job agencies, hiring manager will start 
 
 At the same time, when HR manager upload the resume into the system, they can also check what other positions might be suitable for the submitted resume. Potentially forward it to other hiring manager for their review.
 
-And what will happen after the staff(s) are hired? How should the manager, organize and plan out the team structure to ensure skills are matching and team budget is met. The scheduling & rota management module is set up to help manager to manage this.
+And how to perform mass staff(s) hiring? How should the manager, organize and plan out the team structure to ensure skills are matching and team budget is met. The scheduling & rota management module is set up to help manager to manage this.
 
 
 # SECTION 3 : CREDITS / PROJECT CONTRIBUTION
