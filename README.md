@@ -15,7 +15,7 @@ And what will happen after the staff(s) are hired? How should the manager, organ
 # SECTION 3 : CREDITS / PROJECT CONTRIBUTION
 | Official Full Name | Student ID | Work Items (Who Did What) | Email (Optional) |
 | :---: | :---: | :---: | :---: |
-| TEA LEE SENG | A0198538J | Create resume module, Search by cosine, optaPlanner, developer guide | e0402079@u.nus.edu / TEALEESENG@gmail.com |
+| TEA LEE SENG | A0198538J | Create resume module, Search by cosine similarity, optaPlanner, developer guide | e0402079@u.nus.edu / TEALEESENG@gmail.com |
 | NG SIEW PHENG | A0198525R  | Upload resume module, Text Pre-processing, Main project report editor & video, optaPlanner constraints tuning | e0402066@u.nus.edu |
 | YANG XIAOYAN | A0056720L | Text Pre-processing, Search by KNN, optaPlanner constraints tuning, Project report | e0401594@u.nus.edu |
 | Tarun Rajkumar | A0198522X | Classification model, Project report | e0402063@u.nus.edu |
@@ -25,15 +25,16 @@ And what will happen after the staff(s) are hired? How should the manager, organ
 
 ## Developer Guide
 
-To run Webhook server.
-1. python3 -m venv IRS
-2. source IRS/bin/activate
-3. git clone https://github.com/XiaoyanYang2008/IRS-MRS-F2M2HRSystem.git
-4. cd IRS-MRS-F2M2HRSystem
-5. pip3 install -r webapp/requirements.txt
-6. cd webapp/
-7. python3 server.py
-8. To debug, 
+To run Webhook server under ubuntu
+1. sudo apt install git python3-venv build-essential
+2. python3 -m venv IRS
+3. source IRS/bin/activate
+4. git clone https://github.com/XiaoyanYang2008/IRS-MRS-F2M2HRSystem.git
+5. cd IRS-MRS-F2M2HRSystem
+6. pip3 install -r webapp/requirements.txt
+7. cd webapp/
+8. python3 server.py
+9. To debug, 
     - kill server.py at step 7, and 
     - runs pycharm community edition. 
     - open project on folder, IRS-MRS-F2M2HRSystemt. 
@@ -44,8 +45,8 @@ To run Webhook server.
 
 
 
-To run optaPlanner,
-1. sudo apt install maven
+To run optaPlanner under ubuntu,
+1. sudo apt install maven openjdk-11-jdk-headless
 2. cd optaplanner/
 3. mvn dependency:copy-dependencies
 4. mvn package -Dcheckstyle.skip
