@@ -17,7 +17,7 @@ And what will happen after the staff(s) are hired? How should the manager, organ
 | :---: | :---: | :---: | :---: |
 | TEA LEE SENG | A0198538J | Create resume module, Search by cosine, optaPlanner, developer guide | e0402079@u.nus.edu / TEALEESENG@gmail.com |
 | NG SIEW PHENG | A0198525R  | Upload resume module, Text Pre-processing, Main project report editor & video, optaPlanner constraints tuning | e0402066@u.nus.edu |
-| YANG XIAOYAN | A0056720L | Search by KNN, optaPlanner constraints tuning | e0401594@u.nus.edu |
+| YANG XIAOYAN | A0056720L | Text Pre-processing, Search by KNN, optaPlanner constraints tuning, project report | e0401594@u.nus.edu |
 | Tarun Rajkumar | A0198522X |  | e0402063@u.nus.edu |
 
 # SECTION 4 : VIDEO OF SYSTEM MODELLING & USE CASE DEMO
