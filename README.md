@@ -21,7 +21,9 @@ And how to perform mass staff(s) hiring? How should the manager, organize and pl
 | Tarun Rajkumar | A0198522X | Classification model, Project report | e0402063@u.nus.edu |
 
 # SECTION 4 : VIDEO OF SYSTEM MODELLING & USE CASE DEMO
+# Demo
 
+Slide: https://docs.google.com/presentation/d/1EpLc254bpc49y9Jt0R0Rv2q_ikhi9mxTfuNGEBLD9bU/edit?usp=sharing 
 
 ## Developer Guide
 
