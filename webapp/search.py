@@ -62,27 +62,29 @@ def ui_search(important_search):
     flask_return = []
 
     rank = 0
-    # for idx, row in df1.head(20).iterrows():
-    #     name = row['name']
-    #     filename = row['profileURL']
-    #     score = row['Score']
-    #     rank = rank + 1
-    #     flask_return.append(ResultElement(rank, name, filename, score, 'typeA'))
     for idx, row in df1.head(20).iterrows():
         name = row['name']
         filename = row['profileURL']
         score = row['NScore']
-        if (score <= 1 and score > 0.75):
-            type = 'typeA'
-            hasA = 'hasA'
-        elif (score <0.75 and score >0.4):
-            type = 'typeB'
-            hasB = 'hasB'
-        else:
-            type = 'noType'
         rank = rank + 1
-        res = ResultElement(rank, name, filename, score, type)
-        flask_return.append(res)
+        flask_return.append(ResultElement(rank, name, filename, score, 'typeA'))
+        hasA = 'hasA'
+        
+    # for idx, row in df1.head(20).iterrows():
+    #     name = row['name']
+    #     filename = row['profileURL']
+    #     score = row['NScore']
+    #     if (score <= 1 and score > 0.75):
+    #         type = 'typeA'
+    #         hasA = 'hasA'
+    #     elif (score <0.75):
+    #         type = 'typeB'
+    #         hasB = 'hasB'
+    #     else:
+    #         type = 'noType'
+    #     rank = rank + 1
+    #     res = ResultElement(rank, name, filename, score, type)
+    #     flask_return.append(res)
     return flask_return
 
 
@@ -99,6 +101,9 @@ def search_by_tfidf(search_keywords):
     df['Score'] = vals[0]
     df = df[df['Score'] != 0]
 
+    if(len(df)==0):
+        return df
+    
     if max(df['Score'] != 0):
         df['NScore'] = df['Score'] / max(df['Score'])  # rescale for optaPlanner planning
     else:
