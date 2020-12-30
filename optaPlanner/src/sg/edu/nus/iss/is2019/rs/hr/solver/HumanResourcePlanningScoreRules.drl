@@ -92,7 +92,7 @@ rule "Team within budget"
         scoreHolder.addMediumConstraintMatch(kcontext, $total > $room.getSalaryBudget() ?(int)($room.getSalaryBudget()-$total):0);  //1+2, self+ other //addHardConstraintMatch
 end
 
-rule "Do all meetings as soon as possible"
+rule "Plan better resource to earlier tier"
     when
         MeetingAssignment(startingTimeGrain != null, $startingTimeIndex : startingTimeGrain.getGrainIndex(), $meeting: meeting)
     then
