@@ -1,7 +1,8 @@
 import os
 
 import nltk
-from flask import (Flask, render_template, request, send_from_directory, jsonify)
+from flask import (Flask, render_template, request,
+                   send_from_directory, jsonify)
 from werkzeug import secure_filename
 
 import app_constants
@@ -34,6 +35,7 @@ def index():
 def send_resources(path):
     return send_from_directory('resources', path)
 
+
 @app.route('/createResumePage')
 def createResumePage():
     return render_template('createResumePage.html', resume=resumeDB_pb2.Resume())
@@ -43,9 +45,11 @@ def createResumePage():
 def uploadResumePage():
     return render_template('uploadResumePage.html')
 
+
 @app.route('/classifier')
 def classifierPage():
-    return  render_template('classifier.html')
+    return render_template('classifier.html')
+
 
 @app.route('/editResume')
 def editResume():
@@ -54,6 +58,7 @@ def editResume():
     resume = findResumeByURL(db, profileURL)
 
     return render_template('createResumePage.html', resume=resume)
+
 
 @app.route('/createResumeAction', methods=['POST'])
 def createResumeAction():
@@ -74,9 +79,9 @@ def createResumeAction():
     # rawResume can be searched by KNN like pdf, docx formats.
     # pdf, docx text should be saved into rawResume.
     rawResume = nameRaw + SECTION_SEPERATOR + role + SECTION_SEPERATOR + "monthlysalary: " \
-                + monthlySalary + SECTION_SEPERATOR + aboutRaw + SECTION_SEPERATOR + \
-                experienceRaw + SECTION_SEPERATOR + licensesCertificationsRaw + SECTION_SEPERATOR + \
-                skillsEndorsementsRaw
+        + monthlySalary + SECTION_SEPERATOR + aboutRaw + SECTION_SEPERATOR + \
+        experienceRaw + SECTION_SEPERATOR + licensesCertificationsRaw + SECTION_SEPERATOR + \
+        skillsEndorsementsRaw
 
     try:
         uploadfile = request.files['uploadfile']
@@ -174,6 +179,7 @@ def searchResumeAction():
         result = "No 'Mandatory Search Key' input"
         return render_template('searchResumePageResult.html', results=result)
 
+
 @app.route('/resumeSubmit', methods=['GET', 'POST'])
 def get_resume():
     # data = json.dumps(request.form)
@@ -181,12 +187,14 @@ def get_resume():
     resumes = []
     for name, file in request.files.items():
         filename = uploadFile(file)
-        resume = classifier.extract_text_from_pdf(app.config['UPLOAD_FOLDER']+filename)
+        resume = classifier.extract_text_from_pdf(
+            app.config['UPLOAD_FOLDER']+filename)
         info = classifierModel.label_encoder.classes_[classifierModel.model.predict(
             classifierModel.vectoriser.transform([resume]))]
-        resumes.append((filename,info))
+        resumes.append((filename, info))
 
-    return render_template('classifierResult.html',results=resumes)
+    return render_template('classifierResult.html', results=resumes)
+
 
 @app.route('/Resumes/<path:filename>')
 def custom_static(filename):
