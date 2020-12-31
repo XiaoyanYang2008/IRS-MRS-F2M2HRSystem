@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -19,6 +19,12 @@
         user-select: none;
       }
 
+    html,
+    body,
+    header,
+    .view {
+      height: 100%;
+    }
 
 
       @media (min-width: 768px) {
@@ -51,10 +57,7 @@
             <div class="col-sm">&nbsp</div>
         </div>
         <div class="row">
-            <div class="col-sm" align="left"><a href="/searchResumePage">Back to Search</a></div>
-        </div>
-        <div class="row">
-            <div class="col-sm" align="left"><a href="/">Back to Menu</a></div>
+            <div class="col-sm">&nbsp</div>
         </div>
         {% else %}
         <div class="row">
@@ -132,21 +135,17 @@
             <div class="col-sm" align="left">Not found recommended resumes</div>
         </div>
         {% endif %}
+        {% endif %}
         <div class="row">
             <div class="col-sm">&nbsp;</div>
+        </div>
+        <div class="row">
+            <div class="col-sm" align="left"><a href="/searchResumePage">Back to Search</a></div>
         </div>
         <div class="row">
             <div class="col-sm" align="left"><a href="/">Back to Menu</a></div>
         </div>
-        <div class="row">
-            <div class="col-sm">&nbsp;</div>
-        </div>
-        <div class="row">
-            <div class="col-sm">&nbsp;</div>
-        </div>
-        {% endif %}
     </div>
-</div>
 </div>
 </div>
 </body>
