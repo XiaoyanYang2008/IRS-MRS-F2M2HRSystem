@@ -2,7 +2,7 @@ pip
 wheel
 flask
 requests
-werkzeug==0.16.1
+werkzeug==2.2.3
 pdfminer.six
 python-docx
 bs4
